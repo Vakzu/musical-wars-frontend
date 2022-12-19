@@ -16,3 +16,7 @@ export type BuyEffectRequest = {
     userId: string,
     effectId: string
 }
+
+export type BuyEffectResponse = {
+    inventoryId: string
+}

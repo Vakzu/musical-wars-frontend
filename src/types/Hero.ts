@@ -14,3 +14,6 @@ export type BuyHeroRequest = {
     heroId: string
 }
 
+export type BuyHeroResponse = {
+    characterId: string
+}
