@@ -9,6 +9,7 @@ export enum AuthButtonType {
 
 interface AuthButtonProps {
     isLoading?: boolean,
+    onPushButton: () => void,
     type: AuthButtonType,
     children: ReactNode
 }
@@ -16,7 +17,7 @@ interface AuthButtonProps {
 const AuthButton = (props: AuthButtonProps) => {
     return (
         <Box>
-            <Button isLoading={props.isLoading} colorScheme='teal' variant={props.type} size='lg'>
+            <Button isLoading={props.isLoading} colorScheme='teal' variant={props.type} size='lg' onClick={props.onPushButton}>
                 {props.children}
             </Button>
         </Box>
