@@ -5,23 +5,29 @@ import AuthLoginField from "../components/auth/AuthLoginField";
 import AuthButton, { AuthButtonType } from "../components/auth/AuthButton";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import { AuthApi } from "../API/AuthApi";
-import { LoginResponse } from "../types/Auth";
-import { AxiosResponse } from "axios";
+import { NavigateFunction, Router, useNavigate } from "react-router-dom";
 
 const handleLogin = (
   username: string,
-  password: string
-): Promise<AxiosResponse<LoginResponse, any>> => {
-  return AuthApi.login({ username, password }).then(
-      
-  )
+  password: string,
+  navFuntion: NavigateFunction
+) => {
+  AuthApi.login({ username, password })
+    .then((resp) => {
+      console.log(resp.status);
+      navFuntion("/main");
+    })
+    .catch((err) => console.log(err));
 };
 
 const AuthPage = () => {
   const [loginValue, setLoginValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = React.useState("");
+
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const navFunction = useNavigate();
 
   return (
     <Box className="AuthPage">
@@ -75,13 +81,13 @@ const AuthPage = () => {
           <Flex align="center" justify="center" p="3">
             <AuthButton
               type={AuthButtonType.SOLID}
-              onPushButton={() => printLogin(loginValue, passwordValue)}
+              onPushButton={() => handleLogin(loginValue, passwordValue, navFunction)}
             >
               Login
             </AuthButton>
             <AuthButton
               type={AuthButtonType.GHOST}
-              onPushButton={() => printLogin(loginValue, passwordValue)}
+              onPushButton={() => handleLogin(loginValue, passwordValue, navFunction)}
             >
               Sign up
             </AuthButton>
