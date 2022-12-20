@@ -7,9 +7,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/auth" element={<AuthPage/>}/>
-        <Route path="/lobby" element={<LobbyPage/>}/>
-        <Route path="/main" element={<MainPage/>}/>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/lobby" element={<LobbyPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="*" element={<AuthPage />} />
       </Routes>
     </BrowserRouter>
   );
