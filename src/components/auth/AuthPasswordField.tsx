@@ -3,6 +3,7 @@ import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 
 interface AuthPasswordFieldProps {
   placeholder: string;
+  isInvalid: boolean;
   inputGroupSize: string;
   inputRightPadding: string;
   rightElementWidth: string;
@@ -15,12 +16,14 @@ interface AuthPasswordFieldProps {
 const AuthPasswordField = (props: AuthPasswordFieldProps) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  
-  const handleChange = (event: any) => props.setField(event.target.value)
+
+  const handleChange = (event: any) => props.setField(event.target.value);
 
   return (
     <InputGroup size={props.inputGroupSize}>
       <Input
+        isInvalid={props.isInvalid}
+        errorBorderColor="crimson"
         value={props.field}
         onChange={handleChange}
         pr={props.inputRightPadding}
