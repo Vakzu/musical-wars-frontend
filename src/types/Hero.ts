@@ -9,10 +9,5 @@ export type AllHeroesResponse = {
 }
 
 export type BuyHeroRequest = {
-    userId: string,
     heroId: number
-}
-
-export type BuyHeroResponse = {
-    characterId: string
 }

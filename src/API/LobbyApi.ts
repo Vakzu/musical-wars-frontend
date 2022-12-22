@@ -1,31 +1,20 @@
-import {
-    CreateLobbyRequest,
-    CreateLobbyResponse,
-    JoinLobbyRequest,
-    JoinLobbyResponse,
-    LeaveLobbyRequest,
-    LeaveLobbyResponse
-} from '../types/Lobby'
-import { api } from './api'
+import { JoinLobbyRequest, LeaveLobbyRequest } from "../types/Lobby";
+import { api } from "./api";
 
-export class AuthApi {
-    static createLobby = (request: CreateLobbyRequest) => {
-        return api.post<CreateLobbyResponse>("/lobby/create", {
-            userId: request.userId
-        })
-    }
+export class LobbyApi {
+  static createLobby = () => {
+    return api.post<void>("/lobby/create");
+  };
 
-    static joinLobby = (request: JoinLobbyRequest) => {
-        return api.post<JoinLobbyResponse>("/lobby/join", {
-            userId: request.userId,
-            lobbyId: request.lobbyId
-        })
-    }
+  static joinLobby = (request: JoinLobbyRequest) => {
+    return api.post<void>("/lobby/join", {
+      lobbyId: request.lobbyId,
+    });
+  };
 
-    static leaveLobby = (request: LeaveLobbyRequest) => {
-        return api.post<LeaveLobbyResponse>("/lobby/leave", {
-            userId: request.userId,
-            lobbyId: request.lobbyId
-        })
-    }
+  static leaveLobby = (request: LeaveLobbyRequest) => {
+    return api.post<void>("/lobby/leave", {
+      lobbyId: request.lobbyId,
+    });
+  };
 }

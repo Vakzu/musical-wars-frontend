@@ -5,10 +5,6 @@ export default interface Statistics {
     lastGameTimeStamp: string
 }
 
-export type StatisticsRequest = {
-    userId: string
-}
-
 export type StatisticsResponse = {
     statistics: Statistics
 }

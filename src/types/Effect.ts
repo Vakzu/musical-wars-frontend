@@ -12,10 +12,5 @@ export type AllEffectsResponse = {
 }
 
 export type BuyEffectRequest = {
-    userId: string,
     effectId: number
-}
-
-export type BuyEffectResponse = {
-    inventoryId: string
 }
