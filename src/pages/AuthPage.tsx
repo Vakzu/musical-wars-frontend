@@ -28,7 +28,7 @@ const handleRegister = (
   navFuntion: NavigateFunction
 ) => {
   if (password === confirmPassword) {
-    AuthApi.login({ username, password })
+    AuthApi.register({ username, password })
       .then((resp) => navFuntion("/main"))
       .catch((err) => setInvaludPasswordFunc(true));
   } else {

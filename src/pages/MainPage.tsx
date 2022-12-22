@@ -9,16 +9,14 @@ import UserStats from "../components/main/UserStats";
 import Statistics from "../types/Statistics";
 import { HeroApi } from "../API/HeroApi";
 import { EffectApi } from "../API/EffectApi";
-import { StatisticsApi } from "../API/StatisticsApi";
 import StartButton from "../components/main/StartButton";
-import LobbySocket from "../WS/LobbySocket";
 
-const handleBuyHero = (userId: string, heroId: number) => {
-  HeroApi.buyHero({ userId, heroId });
+const handleBuyHero = (heroId: number) => {
+  HeroApi.buyHero({ heroId });
 };
 
-const handleBuyEffect = (userId: string, effectId: number) => {
-  EffectApi.buyEffect({ userId, effectId });
+const handleBuyEffect = (effectId: number) => {
+  EffectApi.buyEffect({ effectId });
 };
 
 const handleNextHero = (
@@ -48,30 +46,35 @@ const handleRefreshEffects = (updateFunc: (effects: Effect[]) => void) => {
 };
 
 const handleStart = () => {
-  LobbySocket.connect();
+  // LobbyApi.createLobby({userId});
+  // LobbySocket.connect();
 };
 
 interface MainPageProps {}
 
 const MainPage: FC<MainPageProps> = (props) => {
-  const [heroesList, setHeroesList] = useState<Hero[]>([]);
+  // const [heroesList, setHeroesList] = useState<Hero[]>([]);
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
 
   const [currentHeroId, setCurrentHeroId] = useState<number>(0);
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
 
-  const [statistics, setStatistics] = useState<Statistics>();
+  // const [statistics, setStatistics] = useState<Statistics>();
 
   const userId: string = "5";
   //   const currentHero = heroesList[currentHeroId];
 
-  //   const currentHeroExample: Hero = {
-  //     id: 1,
-  //     name: "katya",
-  //     price: "500",
-  //     imgSrc:
-  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Dora_%282020-12-22%29.jpg/1200px-Dora_%282020-12-22%29.jpg",
-  //   };
+  const currentHeroExample: Hero = {
+    id: 1,
+    name: "katya",
+    price: "500",
+    imgSrc:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Dora_%282020-12-22%29.jpg/1200px-Dora_%282020-12-22%29.jpg",
+  };
+
+  const heroesList: Hero[] = [];
+
+  heroesList.push(currentHeroExample);
 
   //   const currentEffect: Effect = {
   //     id: 1,
@@ -83,20 +86,20 @@ const MainPage: FC<MainPageProps> = (props) => {
   //     constitution: 50,
   //   };
 
-  //   const statistics: Statistics = {
-  //     playedGamesAmount: 5,
-  //     winsAmount: 5,
-  //     averagePlace: "0.5",
-  //     lastGameTimeStamp: "10.01.2002",
-  //   };
+  const statistics: Statistics = {
+    playedGamesAmount: 5,
+    winsAmount: 5,
+    averagePlace: "0.5",
+    lastGameTimeStamp: "10.01.2002",
+  };
 
   useEffect(() => {
-    HeroApi.getAll()
-      .then((response) => {
-        setHeroesList(response.data.heroes);
-        setCurrentHeroId(0);
-      })
-      .catch((err) => console.log(err));
+    // HeroApi.getAll()
+    //   .then((response) => {
+    //     setHeroesList(response.data.heroes);
+    //     setCurrentHeroId(0);
+    //   })
+    //   .catch((err) => console.log(err));
 
     EffectApi.getAll()
       .then((response) => {
@@ -105,11 +108,11 @@ const MainPage: FC<MainPageProps> = (props) => {
       })
       .catch((err) => console.log(err));
 
-    StatisticsApi.getStats({ userId })
-      .then((response) => {
-        setStatistics(response.data.statistics);
-      })
-      .catch((err) => console.log(err));
+    // StatisticsApi.getStats({ userId })
+    //   .then((response) => {
+    //     setStatistics(response.data.statistics);
+    //   })
+    //   .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -131,7 +134,7 @@ const MainPage: FC<MainPageProps> = (props) => {
             }
             onBuy={
               heroesList[currentEffectId] !== undefined
-                ? () => handleBuyHero(userId, heroesList[currentHeroId].id)
+                ? () => handleBuyHero(heroesList[currentHeroId].id)
                 : undefined
             }
             onNext={
@@ -146,9 +149,9 @@ const MainPage: FC<MainPageProps> = (props) => {
                   }
                 : undefined
             }
-            onRefresh={() => handleRefreshHeroes(setHeroesList)}
+            onRefresh={() => {}}
           >
-            {/* ${heroesList[currentEffectId].price} */}
+            ${heroesList[currentHeroId].price}
           </EntityCard>
         </Box>
         <Box w="md">
@@ -156,7 +159,7 @@ const MainPage: FC<MainPageProps> = (props) => {
             entity={effectsList[currentEffectId]}
             onBuy={
               effectsList[currentEffectId] !== undefined
-                ? () => handleBuyEffect(userId, effectsList[currentEffectId].id)
+                ? () => handleBuyEffect(effectsList[currentEffectId].id)
                 : undefined
             }
             onNext={
@@ -206,13 +209,7 @@ const MainPage: FC<MainPageProps> = (props) => {
       <Box p="5" position="absolute" right="10" top="10" w="200">
         <UserStats statistics={statistics} />
       </Box>
-      <Box
-        pos="absolute"
-        top="650"
-        left="42%"
-        w="15%"
-        alignItems="center"
-      >
+      <Box pos="absolute" top="650" left="42%" w="15%" alignItems="center">
         <StartButton onPushButton={() => handleStart()}>START</StartButton>
       </Box>
     </Box>
