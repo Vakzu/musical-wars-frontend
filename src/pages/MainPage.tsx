@@ -10,6 +10,8 @@ import Statistics from "../types/Statistics";
 import { HeroApi } from "../API/HeroApi";
 import { EffectApi } from "../API/EffectApi";
 import { StatisticsApi } from "../API/StatisticsApi";
+import StartButton from "../components/main/StartButton";
+import LobbySocket from "../WS/LobbySocket";
 
 /*
 2) Кнопку старт
@@ -49,6 +51,10 @@ const handleRefreshEffects = (updateFunc: (effects: Effect[]) => void) => {
     .catch((err) => console.log(err));
 };
 
+const handleStart = () => {
+  LobbySocket.connect();
+};
+
 interface MainPageProps {}
 
 const MainPage: FC<MainPageProps> = (props) => {
@@ -61,7 +67,7 @@ const MainPage: FC<MainPageProps> = (props) => {
   const [statistics, setStatistics] = useState<Statistics>();
 
   const userId: string = "5";
-//   const currentHero = heroesList[currentHeroId];
+  //   const currentHero = heroesList[currentHeroId];
 
   //   const currentHeroExample: Hero = {
   //     id: 1,
@@ -96,14 +102,15 @@ const MainPage: FC<MainPageProps> = (props) => {
       })
       .catch((err) => console.log(err));
 
-      EffectApi.getAll()
+    EffectApi.getAll()
       .then((response) => {
         setEffectsList(response.data.effects);
         setCurrentEffectId(0);
       })
       .catch((err) => console.log(err));
 
-      StatisticsApi.getStats({userId}).then((response) => {
+    StatisticsApi.getStats({ userId })
+      .then((response) => {
         setStatistics(response.data.statistics);
       })
       .catch((err) => console.log(err));
@@ -174,19 +181,27 @@ const MainPage: FC<MainPageProps> = (props) => {
             <HStack>
               <Box w="40px" h="40px" color="#107896">
                 <GiBackstab />
-                {effectsList[currentEffectId] ? effectsList[currentEffectId].stamina : ''}
+                {effectsList[currentEffectId]
+                  ? effectsList[currentEffectId].stamina
+                  : ""}
               </Box>
               <Box w="40px" h="40px" color="#C02F1D">
                 <GiHighKick />
-                {effectsList[currentEffectId] ? effectsList[currentEffectId].strength : ''}
+                {effectsList[currentEffectId]
+                  ? effectsList[currentEffectId].strength
+                  : ""}
               </Box>
               <Box w="40px" h="40px" color="orange.500">
                 <GiHolyGrail />
-                {effectsList[currentEffectId] ? effectsList[currentEffectId].luck : ''}
+                {effectsList[currentEffectId]
+                  ? effectsList[currentEffectId].luck
+                  : ""}
               </Box>
               <Box w="40px" h="40px" color="green.400">
                 <GiLeg />
-                {effectsList[currentEffectId] ? effectsList[currentEffectId].constitution : ''}
+                {effectsList[currentEffectId]
+                  ? effectsList[currentEffectId].constitution
+                  : ""}
               </Box>
             </HStack>
           </EntityCard>
@@ -194,6 +209,16 @@ const MainPage: FC<MainPageProps> = (props) => {
       </Flex>
       <Box p="5" position="absolute" right="10" top="10" w="200">
         <UserStats statistics={statistics} />
+      </Box>
+      <Box
+        pos="absolute"
+        top="650"
+        left="42%"
+        w="15%"
+        alignItems="center"
+        bg="teal"
+      >
+        <StartButton onPushButton={() => handleStart()}>START</StartButton>
       </Box>
     </Box>
   );
