@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Hero from "../types/Hero";
 import Effect from "../types/Effect";
-import EntityCard from "../components/main/EntityCard";
+import EntityCard, { EntityType } from "../components/main/EntityCard";
 import { GiBackstab, GiHighKick, GiHolyGrail, GiLeg } from "react-icons/gi";
 import UserStats from "../components/main/UserStats";
 import Statistics from "../types/Statistics";
@@ -127,6 +127,7 @@ const MainPage: FC<MainPageProps> = (props) => {
         <Box w="md" p="2%">
           <EntityCard
             entity={heroesList[currentHeroId]}
+            entityType={EntityType.HERO}
             imgSrc={
               heroesList[currentHeroId] !== undefined
                 ? heroesList[currentHeroId].imgSrc
@@ -157,6 +158,7 @@ const MainPage: FC<MainPageProps> = (props) => {
         <Box w="md">
           <EntityCard
             entity={effectsList[currentEffectId]}
+            entityType={EntityType.EFFECT}
             onBuy={
               effectsList[currentEffectId] !== undefined
                 ? () => handleBuyEffect(effectsList[currentEffectId].id)

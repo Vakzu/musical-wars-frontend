@@ -1,10 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { FC } from "react";
 
-interface PersonNameProps {}
+interface PersonNameProps {
+  name: string;
+}
 
 const PersonName: FC<PersonNameProps> = (props) => {
-  return <Box></Box>;
+  return (
+    <Box>
+      <Text fontSize="lg" as='b'>{props.name}</Text>
+    </Box>
+  );
 };
 
 export default PersonName;

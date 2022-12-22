@@ -9,7 +9,7 @@ interface StartButtonProps {
 
 const StartButton: FC<StartButtonProps> = (props) => {
     return (
-        <Box>
+        <Box w='100%'>
             <Button isLoading={props.isLoading} colorScheme='teal' variant='solid' w='100%' onClick={props.onPushButton}>
                 {props.children}
             </Button>

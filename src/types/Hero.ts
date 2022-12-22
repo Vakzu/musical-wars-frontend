@@ -1,13 +1,14 @@
-import Entity from "./Entity"
+import Entity from "./Entity";
 
 export default interface Hero extends Entity {
-    imgSrc: string
+  health: number;
+  imgSrc: string;
 }
 
 export type AllHeroesResponse = {
-    heroes: Hero[]
-}
+  heroes: Hero[];
+};
 
 export type BuyHeroRequest = {
-    heroId: number
-}
+  heroId: number;
+};

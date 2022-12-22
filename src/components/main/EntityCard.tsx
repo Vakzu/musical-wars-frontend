@@ -13,8 +13,14 @@ import {
 } from "@chakra-ui/react";
 import Entity from "../../types/Entity";
 
+export enum EntityType {
+  HERO = "Hero",
+  EFFECT = "Effect",
+}
+
 interface EntityCardProps {
   entity?: Entity;
+  entityType: EntityType;
   imgSrc?: string;
   onBuy?: () => void;
   onNext?: () => void;
@@ -55,13 +61,17 @@ const EntityCard: FC<EntityCardProps> = (props) => {
       <Card maxW="sm" rounded="md" shadow="md">
         <CardBody>
           <Stack mt="6" spacing="3">
-            <Heading size="md">Heroes not found</Heading>
+            <Heading size="md">{props.entityType} not found</Heading>
           </Stack>
         </CardBody>
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2">
-            <Button variant="solid" colorScheme="blue" onClick={props.onRefresh}>
+            <Button
+              variant="solid"
+              colorScheme="blue"
+              onClick={props.onRefresh}
+            >
               Refresh
             </Button>
           </ButtonGroup>
