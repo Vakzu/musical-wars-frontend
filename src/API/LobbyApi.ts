@@ -1,4 +1,4 @@
-import { JoinLobbyRequest, LeaveLobbyRequest } from "../types/Lobby";
+import { JoinLobbyRequest, LeaveLobbyRequest, LobbyUsersResponse } from "../types/Lobby";
 import { api } from "./api";
 
 export class LobbyApi {
@@ -17,4 +17,8 @@ export class LobbyApi {
       lobbyId: request.lobbyId,
     });
   };
+
+  static getUsersInLobby = () => {
+    return api.get<LobbyUsersResponse>('/lobby/users')
+  }
 }
