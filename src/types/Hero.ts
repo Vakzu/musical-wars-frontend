@@ -1,8 +1,7 @@
-export interface Hero {
-    id: number,
-    name: string,
-    price: number,
-    health: number
+import Entity from "./Entity"
+
+export default interface Hero extends Entity {
+    imgSrc: string
 }
 
 export type AllHeroesResponse = {
@@ -11,7 +10,7 @@ export type AllHeroesResponse = {
 
 export type BuyHeroRequest = {
     userId: string,
-    heroId: string
+    heroId: number
 }
 
 export type BuyHeroResponse = {

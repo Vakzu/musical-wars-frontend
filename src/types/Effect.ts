@@ -1,7 +1,6 @@
-export interface Effect {
-    id: number,
-    name: string,
-    price: number,
+import Entity from "./Entity"
+
+export default interface Effect extends Entity {
     stamina: number,
     strength: number,
     luck: number,
@@ -9,12 +8,12 @@ export interface Effect {
 }
 
 export type AllEffectsResponse = {
-    heroes: Effect[]
+    effects: Effect[]
 }
 
 export type BuyEffectRequest = {
     userId: string,
-    effectId: string
+    effectId: number
 }
 
 export type BuyEffectResponse = {
