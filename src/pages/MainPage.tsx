@@ -13,10 +13,6 @@ import { StatisticsApi } from "../API/StatisticsApi";
 import StartButton from "../components/main/StartButton";
 import LobbySocket from "../WS/LobbySocket";
 
-/*
-2) Кнопку старт
-*/
-
 const handleBuyHero = (userId: string, heroId: number) => {
   HeroApi.buyHero({ userId, heroId });
 };
@@ -216,7 +212,6 @@ const MainPage: FC<MainPageProps> = (props) => {
         left="42%"
         w="15%"
         alignItems="center"
-        bg="teal"
       >
         <StartButton onPushButton={() => handleStart()}>START</StartButton>
       </Box>
