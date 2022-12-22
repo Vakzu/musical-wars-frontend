@@ -17,7 +17,7 @@ interface LobbySectionProps {
 
 const LobbySection: FC<LobbySectionProps> = (props) => {
   return (
-    <Card maxW="sm">
+    <Card>
       <CardBody>
         <Heading size="md">{props.sectionName}</Heading>
       </CardBody>
