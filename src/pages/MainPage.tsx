@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, effect } from "@chakra-ui/react";
+import { Box, Flex, HStack } from "@chakra-ui/react";
 import { FC, useEffect, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Hero from "../types/Hero";
@@ -12,10 +12,7 @@ import { EffectApi } from "../API/EffectApi";
 import { StatisticsApi } from "../API/StatisticsApi";
 
 /*
-1) Сделать перелистывание карточек
 2) Кнопку старт
-3) Запрогать функционал а не мокать
-4) Прикрутить обновление если не загрузили
 */
 
 const handleBuyHero = (userId: string, heroId: number) => {
@@ -125,21 +122,21 @@ const MainPage: FC<MainPageProps> = (props) => {
           <EntityCard
             entity={heroesList[currentHeroId]}
             imgSrc={
-              heroesList[currentHeroId] != undefined
+              heroesList[currentHeroId] !== undefined
                 ? heroesList[currentHeroId].imgSrc
                 : undefined
             }
             onBuy={
-              heroesList[currentEffectId] != undefined
+              heroesList[currentEffectId] !== undefined
                 ? () => handleBuyHero(userId, heroesList[currentHeroId].id)
                 : undefined
             }
             onNext={
-              heroesList[currentEffectId] != undefined
+              heroesList[currentEffectId] !== undefined
                 ? () => {
                     handleNextHero(
                       setCurrentHeroId,
-                      currentHeroId + 1 == heroesList.length
+                      currentHeroId + 1 === heroesList.length
                         ? 0
                         : currentHeroId + 1
                     );
@@ -155,16 +152,16 @@ const MainPage: FC<MainPageProps> = (props) => {
           <EntityCard
             entity={effectsList[currentEffectId]}
             onBuy={
-              effectsList[currentEffectId] != undefined
+              effectsList[currentEffectId] !== undefined
                 ? () => handleBuyEffect(userId, effectsList[currentEffectId].id)
                 : undefined
             }
             onNext={
-              effectsList[currentEffectId] != undefined
+              effectsList[currentEffectId] !== undefined
                 ? () => {
                     handleNextEffect(
                       setCurrentEffectId,
-                      currentEffectId + 1 == effectsList.length
+                      currentEffectId + 1 === effectsList.length
                         ? 0
                         : currentEffectId + 1
                     );

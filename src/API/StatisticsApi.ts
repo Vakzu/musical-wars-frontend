@@ -1,4 +1,4 @@
-import Statistics, { StatisticsRequest, StatisticsResponse } from "../types/Statistics"
+import { StatisticsRequest, StatisticsResponse } from "../types/Statistics"
 import { api } from "./api"
 
 export class StatisticsApi {
