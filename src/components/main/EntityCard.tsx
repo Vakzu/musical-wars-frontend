@@ -23,11 +23,11 @@ interface EntityCardProps {
 }
 
 const EntityCard: FC<EntityCardProps> = (props) => {
-  if (props.entity != undefined) {
+  if (props.entity !== undefined) {
     return (
       <Card maxW="md" rounded="md" shadow="md">
         <CardBody>
-          {props.imgSrc != undefined && (
+          {props.imgSrc !== undefined && (
             <Image maxH="sm" src={props.imgSrc} borderRadius="Dark lg" />
           )}
           <Stack mt="6" spacing="3">
