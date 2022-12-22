@@ -77,20 +77,13 @@ const AuthPage = () => {
         top="5"
         right="5"
       />
-      {/* <Fade> */}
-      <Box
-        position="absolute"
-        w="100"
-        top="25"
-        left="5"
-      >
+      <Box position="absolute" w="100" top="25" left="5">
         {(isInvalidPassword || isPasswordsNotMatch) && (
           <AuthAlert status="error">
             {alertMessage(isInvalidPassword, isPasswordsNotMatch)}
           </AuthAlert>
         )}
       </Box>
-      {/* </Fade> */}
       <Flex align="center" justify="center">
         <Box maxW="55%" mt="100">
           <Image

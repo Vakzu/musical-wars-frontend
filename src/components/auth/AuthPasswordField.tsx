@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 
 interface AuthPasswordFieldProps {
@@ -13,7 +13,7 @@ interface AuthPasswordFieldProps {
   setField: (field: string) => void;
 }
 
-const AuthPasswordField = (props: AuthPasswordFieldProps) => {
+const AuthPasswordField: FC<AuthPasswordFieldProps> = (props) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 

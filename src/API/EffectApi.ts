@@ -5,11 +5,11 @@ import {
 } from '../types/Effect'
 import { api } from './api'
 
-export class HeroApi {
+export class EffectApi {
     static getAll = () => {
         return api.get<AllEffectsResponse>("/effect/all")
     }
-    static buyHero = (request: BuyEffectRequest) => {
+    static buyEffect = (request: BuyEffectRequest) => {
         return api.post<BuyEffectResponse>("/effect/buy", {
             userId: request.userId,
             heroId: request.effectId

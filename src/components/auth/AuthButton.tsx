@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {FC, ReactNode} from 'react';
 
 import {Box, Button} from '@chakra-ui/react'
 
@@ -14,7 +14,7 @@ interface AuthButtonProps {
     children: ReactNode
 }
 
-const AuthButton = (props: AuthButtonProps) => {
+const AuthButton: FC<AuthButtonProps> = (props) => {
     return (
         <Box>
             <Button isLoading={props.isLoading} colorScheme='teal' variant={props.type} size='lg' onClick={props.onPushButton}>
