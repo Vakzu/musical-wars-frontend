@@ -5,7 +5,7 @@ import LobbySection from "../components/lobby/LobbySection";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import PersonName from "../components/lobby/PersonName";
 import InviteCheckbox from "../components/lobby/InviteCheckbox";
-import EntityCard, { EntityType } from "../components/main/EntityCard";
+import EntityCard from "../components/main/EntityCard";
 import StartButton from "../components/main/StartButton";
 
 interface LobbyPageProps {}

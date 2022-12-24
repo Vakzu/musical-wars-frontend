@@ -13,19 +13,14 @@ import {
 } from "@chakra-ui/react";
 import Entity from "../../types/Entity";
 
-export enum EntityType {
-  HERO = "Hero",
-  EFFECT = "Effect",
-}
-
 interface EntityCardProps {
   entity?: Entity;
-  entityType: EntityType;
   imgSrc?: string;
   onBuy?: () => void;
   onNext?: () => void;
   onRefresh: () => void;
-  children: ReactNode;
+  defaultText: string;
+  children?: ReactNode;
 }
 
 const EntityCard: FC<EntityCardProps> = (props) => {
@@ -61,7 +56,7 @@ const EntityCard: FC<EntityCardProps> = (props) => {
       <Card maxW="sm" rounded="md" shadow="md">
         <CardBody>
           <Stack mt="6" spacing="3">
-            <Heading size="md">{props.entityType} not found</Heading>
+            <Heading size="md">{props.defaultText}</Heading>
           </Stack>
         </CardBody>
         <Divider />

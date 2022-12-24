@@ -3,7 +3,7 @@ import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Hero from "../types/Hero";
 import Effect from "../types/Effect";
-import EntityCard, { EntityType } from "../components/main/EntityCard";
+import EntityCard from "../components/main/EntityCard";
 import { GiBackstab, GiHighKick, GiHolyGrail, GiLeg } from "react-icons/gi";
 import { FaDollarSign, FaHeartbeat } from "react-icons/fa";
 import UserStats from "../components/main/UserStats";
