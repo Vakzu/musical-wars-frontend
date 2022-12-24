@@ -1,11 +1,15 @@
+import axios from "axios";
 import { AuthResponse, LoginRequest, RegisterRequest } from "../types/Auth";
 import { api } from "./api";
 
 export class AuthApi {
   static login = (user: LoginRequest) => {
-    return api.post<AuthResponse>("/login", {
-      username: user.username,
-      password: user.password,
+    var bodyFormData = new FormData();
+    bodyFormData.append("username", user.username);
+    bodyFormData.append("password", user.password);
+
+    return api.post<AuthResponse>("/login", bodyFormData, {
+      headers: { 'Content-Type': `multipart/form-data` },
     });
   };
 
