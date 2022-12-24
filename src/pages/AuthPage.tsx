@@ -1,21 +1,28 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Box, Fade, Flex, Image, useColorMode } from "@chakra-ui/react";
 import AuthPasswordField from "../components/auth/AuthPasswordField";
 import AuthLoginField from "../components/auth/AuthLoginField";
 import AuthButton, { AuthButtonType } from "../components/auth/AuthButton";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import { AuthApi } from "../API/AuthApi";
-import { NavigateFunction, Router, useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import AuthAlert from "../components/auth/AuthAlert";
+import { AuthContext } from "../App";
 
 const handleLogin = (
   username: string,
   password: string,
   setInvaludPasswordFunc: (flag: boolean) => void,
-  navFuntion: NavigateFunction
+  navFuntion: NavigateFunction,
+  setUsername: (val: string) => void,
+  setUserId: (val: number) => void
 ) => {
   AuthApi.login({ username, password })
-    .then((resp) => navFuntion("/main"))
+    .then((resp) => {
+      setUsername(resp.data.username);
+      setUserId(resp.data.userId);
+      navFuntion("/main");
+    })
     .catch((err) => setInvaludPasswordFunc(true));
 };
 
@@ -25,11 +32,17 @@ const handleRegister = (
   confirmPassword: string,
   setInvaludPasswordFunc: (flag: boolean) => void,
   setPasswordsNotMatchFunc: (flag: boolean) => void,
-  navFuntion: NavigateFunction
+  navFuntion: NavigateFunction,
+  setUsername: (val: string) => void,
+  setUserId: (val: number) => void
 ) => {
   if (password === confirmPassword) {
     AuthApi.register({ username, password })
-      .then((resp) => navFuntion("/main"))
+      .then((resp) => {
+        setUsername(resp.data.username);
+        setUserId(resp.data.userId);
+        navFuntion("/main");
+      })
       .catch((err) => setInvaludPasswordFunc(true));
   } else {
     setPasswordsNotMatchFunc(true);
@@ -58,6 +71,8 @@ const clearPasswordStates = (
 };
 
 const AuthPage = () => {
+  const { setUserId, setUsername } = useContext(AuthContext);
+
   const [loginValue, setLoginValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = React.useState("");
@@ -139,7 +154,9 @@ const AuthPage = () => {
                   loginValue,
                   passwordValue,
                   setIsInvalidPassword,
-                  navFunction
+                  navFunction,
+                  setUsername,
+                  setUserId
                 );
               }}
             >
@@ -158,7 +175,9 @@ const AuthPage = () => {
                   confirmPasswordValue,
                   setIsInvalidPassword,
                   setIsPasswordsNotMatch,
-                  navFunction
+                  navFunction,
+                  setUsername,
+                  setUserId
                 );
               }}
             >

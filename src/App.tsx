@@ -2,17 +2,39 @@ import AuthPage from "./pages/AuthPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LobbyPage from "./pages/LobbyPage";
 import MainPage from "./pages/MainPage";
+import { createContext, useState } from "react";
+
+interface AuthContext {
+  userId?: number;
+  username?: string;
+  setUserId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setUsername: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+
+export const AuthContext = createContext({} as AuthContext);
 
 function App() {
+  const [username, setUsername] = useState<string>();
+  const [userId, setUserId] = useState<number>();
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/lobby" element={<LobbyPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="*" element={<AuthPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthContext.Provider
+      value={{
+        userId,
+        username,
+        setUserId,
+        setUsername,
+      }}
+    >
+      <BrowserRouter>
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/lobby" element={<LobbyPage />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route path="*" element={<AuthPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 

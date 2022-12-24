@@ -1,15 +1,19 @@
 import { Box, Flex, HStack } from "@chakra-ui/react";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Hero from "../types/Hero";
 import Effect from "../types/Effect";
 import EntityCard, { EntityType } from "../components/main/EntityCard";
 import { GiBackstab, GiHighKick, GiHolyGrail, GiLeg } from "react-icons/gi";
+import { FaDollarSign, FaHeartbeat } from "react-icons/fa";
 import UserStats from "../components/main/UserStats";
 import Statistics from "../types/Statistics";
 import { HeroApi } from "../API/HeroApi";
 import { EffectApi } from "../API/EffectApi";
 import StartButton from "../components/main/StartButton";
+import { StatisticsApi } from "../API/StatisticsApi";
+import { LobbyApi } from "../API/LobbyApi";
+import { AuthContext } from "../App";
 
 const handleBuyHero = (heroId: number) => {
   HeroApi.buyHero({ heroId });
@@ -46,60 +50,29 @@ const handleRefreshEffects = (updateFunc: (effects: Effect[]) => void) => {
 };
 
 const handleStart = () => {
-  // LobbyApi.createLobby({userId});
-  // LobbySocket.connect();
+  LobbyApi.createLobby();
 };
 
 interface MainPageProps {}
 
 const MainPage: FC<MainPageProps> = (props) => {
-  // const [heroesList, setHeroesList] = useState<Hero[]>([]);
+  const { userId, username } = useContext(AuthContext);
+  
+  const [heroesList, setHeroesList] = useState<Hero[]>([]);
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
 
   const [currentHeroId, setCurrentHeroId] = useState<number>(0);
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
 
-  // const [statistics, setStatistics] = useState<Statistics>();
-
-  const userId: string = "5";
-  //   const currentHero = heroesList[currentHeroId];
-
-  const currentHeroExample: Hero = {
-    id: 1,
-    name: "katya",
-    price: "500",
-    imgSrc:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Dora_%282020-12-22%29.jpg/1200px-Dora_%282020-12-22%29.jpg",
-  };
-
-  const heroesList: Hero[] = [];
-
-  heroesList.push(currentHeroExample);
-
-  //   const currentEffect: Effect = {
-  //     id: 1,
-  //     name: "Oh my god",
-  //     price: "500",
-  //     stamina: 20,
-  //     strength: 30,
-  //     luck: 40,
-  //     constitution: 50,
-  //   };
-
-  const statistics: Statistics = {
-    playedGamesAmount: 5,
-    winsAmount: 5,
-    averagePlace: "0.5",
-    lastGameTimeStamp: "10.01.2002",
-  };
+  const [statistics, setStatistics] = useState<Statistics>();
 
   useEffect(() => {
-    // HeroApi.getAll()
-    //   .then((response) => {
-    //     setHeroesList(response.data.heroes);
-    //     setCurrentHeroId(0);
-    //   })
-    //   .catch((err) => console.log(err));
+    HeroApi.getAll()
+      .then((response) => {
+        setHeroesList(response.data.heroes);
+        setCurrentHeroId(0);
+      })
+      .catch((err) => console.log(err));
 
     EffectApi.getAll()
       .then((response) => {
@@ -108,11 +81,11 @@ const MainPage: FC<MainPageProps> = (props) => {
       })
       .catch((err) => console.log(err));
 
-    // StatisticsApi.getStats({ userId })
-    //   .then((response) => {
-    //     setStatistics(response.data.statistics);
-    //   })
-    //   .catch((err) => console.log(err));
+    StatisticsApi.getStats()
+      .then((response) => {
+        setStatistics(response.data.statistics);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -150,9 +123,18 @@ const MainPage: FC<MainPageProps> = (props) => {
                   }
                 : undefined
             }
-            onRefresh={() => {}}
+            onRefresh={() => handleRefreshHeroes(setHeroesList)}
           >
-            ${heroesList[currentHeroId].price}
+            <HStack>
+              <Box>
+                <FaDollarSign />
+                {/* {heroesList[currentHeroId].price} */}
+              </Box>
+              <Box>
+                <FaHeartbeat />
+                {/* {heroesList[currentHeroId].health} */}
+              </Box>
+            </HStack>
           </EntityCard>
         </Box>
         <Box w="md">
@@ -206,13 +188,13 @@ const MainPage: FC<MainPageProps> = (props) => {
               </Box>
             </HStack>
           </EntityCard>
+          <Box pos="absolute" top="650" left="40%" w="20%" alignItems="center" p='5'>
+            <StartButton onPushButton={() => handleStart()}>START</StartButton>
+          </Box>
         </Box>
       </Flex>
       <Box p="5" position="absolute" right="10" top="10" w="200">
         <UserStats statistics={statistics} />
-      </Box>
-      <Box pos="absolute" top="650" left="42%" w="15%" alignItems="center">
-        <StartButton onPushButton={() => handleStart()}>START</StartButton>
       </Box>
     </Box>
   );
