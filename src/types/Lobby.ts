@@ -1,5 +1,5 @@
 export type LobbyCreateResponse = {
-    lobbyId: string
+    lobbyId: number
 }
 
 export type LobbyRequest = {
