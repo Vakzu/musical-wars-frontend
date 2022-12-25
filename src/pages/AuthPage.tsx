@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Box, Flex, Image, useColorMode } from "@chakra-ui/react";
 import AuthPasswordField from "../components/auth/AuthPasswordField";
 import AuthLoginField from "../components/auth/AuthLoginField";
-import AuthButton, { AuthButtonType } from "../components/auth/AuthButton";
+import AuthButton from "../components/auth/AuthButton";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import { AuthApi } from "../API/AuthApi";
 import { NavigateFunction, useNavigate } from "react-router-dom";
@@ -144,7 +144,7 @@ const AuthPage = () => {
           </Box>
           <Flex align="center" justify="center" p="3">
             <AuthButton
-              type={AuthButtonType.SOLID}
+              type={'solid'}
               onPushButton={() => {
                 clearPasswordStates(
                   setIsInvalidPassword,
@@ -163,7 +163,7 @@ const AuthPage = () => {
               Login
             </AuthButton>
             <AuthButton
-              type={AuthButtonType.GHOST}
+              type='ghost'
               onPushButton={() => {
                 clearPasswordStates(
                   setIsInvalidPassword,
