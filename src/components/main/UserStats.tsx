@@ -1,16 +1,11 @@
 import {
   Box,
   Collapse,
-  Flex,
   Heading,
   Stat,
-  StatArrow,
-  StatGroup,
-  StatHelpText,
   StatLabel,
   StatNumber,
   VStack,
-  useColorMode,
 } from "@chakra-ui/react";
 import { FC } from "react";
 import Statistics from "../../types/Statistics";
@@ -21,9 +16,6 @@ interface UserStatsProps {
 }
 
 const UserStats: FC<UserStatsProps> = (props) => {
-  const { colorMode } = useColorMode();
-  const isDark = colorMode === "dark";
-
   return props.statistics ? (
     <Collapse in={props.isOpen} animateOpacity>
       <VStack align="left">

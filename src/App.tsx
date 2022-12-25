@@ -4,14 +4,14 @@ import LobbyPage from "./pages/LobbyPage";
 import MainPage from "./pages/MainPage";
 import { createContext, useState } from "react";
 
-interface AuthContext {
+interface IAuthContext {
   userId?: number;
   username?: string;
   setUserId: React.Dispatch<React.SetStateAction<number | undefined>>;
   setUsername: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
-export const AuthContext = createContext({} as AuthContext);
+export const AuthContext = createContext({} as IAuthContext);
 
 function App() {
   const [username, setUsername] = useState<string>();

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { AuthResponse, LoginRequest, RegisterRequest } from "../types/Auth";
 import { api } from "./api";
 

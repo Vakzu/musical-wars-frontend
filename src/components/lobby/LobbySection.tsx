@@ -1,7 +1,6 @@
 import { FC, ReactNode } from "react";
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   Heading,

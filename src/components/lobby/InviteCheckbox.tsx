@@ -1,4 +1,4 @@
-import { Box, Checkbox, Icon } from "@chakra-ui/react";
+import { Checkbox } from "@chakra-ui/react";
 import { FC, ReactNode } from "react";
 import CustomIcon from "./CustomIcon";
 

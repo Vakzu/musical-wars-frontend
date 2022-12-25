@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Box, Fade, Flex, Image, useColorMode } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import { Box, Flex, Image, useColorMode } from "@chakra-ui/react";
 import AuthPasswordField from "../components/auth/AuthPasswordField";
 import AuthLoginField from "../components/auth/AuthLoginField";
 import AuthButton, { AuthButtonType } from "../components/auth/AuthButton";
@@ -80,7 +80,7 @@ const AuthPage = () => {
   const [isInvalidPassword, setIsInvalidPassword] = React.useState(false);
   const [isPasswordsNotMatch, setIsPasswordsNotMatch] = React.useState(false);
 
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const navFunction = useNavigate();
 

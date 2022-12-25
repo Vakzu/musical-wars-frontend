@@ -1,6 +1,5 @@
-import { Box, Divider, Flex, VStack } from "@chakra-ui/react";
-import React, { FC, useState } from "react";
-import Section from "../components/lobby/LobbySection";
+import { Box, VStack } from "@chakra-ui/react";
+import { FC } from "react";
 import LobbySection from "../components/lobby/LobbySection";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import PersonName from "../components/lobby/PersonName";
@@ -9,12 +8,6 @@ import EntityCard from "../components/main/EntityCard";
 import StartButton from "../components/main/StartButton";
 
 interface LobbyPageProps {}
-
-/*
-1) Отрефакторить компонент EntityCard
-2) Отрефакторить компонент кнопки
-
-*/
 const handleStart = () => {
   // LobbyApi.createLobby({userId});
   // LobbySocket.connect();
@@ -81,18 +74,14 @@ const LobbyPage: FC<LobbyPageProps> = (props) => {
         <Box w="100%">
           <EntityCard
             onRefresh={() => {}}
-            entityType={EntityType.HERO}
-          >
-            
-          </EntityCard>
+            defaultText="Heroes not found!"
+          ></EntityCard>
         </Box>
         <Box w="100%">
           <EntityCard
             onRefresh={() => {}}
-            entityType={EntityType.EFFECT}
-          >
-
-          </EntityCard>
+            defaultText="Effects not found!"
+          ></EntityCard>
         </Box>
       </VStack>
 

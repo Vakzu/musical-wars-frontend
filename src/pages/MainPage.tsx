@@ -22,11 +22,10 @@ import StartButton from "../components/main/StartButton";
 import { StatisticsApi } from "../API/StatisticsApi";
 import { LobbyApi } from "../API/LobbyApi";
 import { AuthContext } from "../App";
-import LobbySocket from "../WS/LobbySocket";
 import { StatsButton } from "../components/main/StatsButton";
 
 const MainPage: FC = () => {
-  const { userId, username } = useContext(AuthContext);
+  const { username } = useContext(AuthContext);
 
   const [heroesList, setHeroesList] = useState<Hero[]>([]);
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
