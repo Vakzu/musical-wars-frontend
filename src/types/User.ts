@@ -1,7 +1,7 @@
 export interface UserBalanceResponse {
-    balance: string
+  balance: string;
 }
 
 export interface UserOnlineResponse {
-    userNames: string[]
+  userNames: string[];
 }

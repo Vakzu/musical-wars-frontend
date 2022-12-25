@@ -11,8 +11,8 @@ export class UserApi {
   };
 
   static inviteToLobby = (username: string, lobbyId: number) => {
-    return api.post<void>(
-      "/user/invite?lobbyId=" + lobbyId + "&userName=" + username
-    );
+    return api.post<void>("/user/invite", null, {
+      params: { lobbyId, username },
+    });
   };
 }

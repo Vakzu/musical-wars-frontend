@@ -22,7 +22,7 @@ interface PickCharacterCardProps {
   children?: ReactNode;
 }
 
-const PickCharacterCard: FC<PickCharacterCardProps> = (props) => {
+const PickCharacterCard: FC<PickCharacterCardProps> = ({imgH, onPick, children}) => {
   const [charactersList, setCharactersList] = useState<Character[]>([]);
 
   const [currentCharacterId, setCurrentCharacterId] = useState<number>(0);
@@ -38,7 +38,7 @@ const PickCharacterCard: FC<PickCharacterCardProps> = (props) => {
   };
 
   const handlePick = () => {
-    if (props.onPick != undefined) props.onPick(currentCharacter);
+    if (onPick !== undefined) onPick(currentCharacter);
   };
 
   const handleNext = () => {
@@ -61,7 +61,7 @@ const PickCharacterCard: FC<PickCharacterCardProps> = (props) => {
         <CardBody>
           {currentCharacter !== undefined && (
             <Image
-              h={props.imgH}
+              h={imgH}
               w="sm"
               src={currentCharacter.imgSrc}
               borderRadius="Dark lg"

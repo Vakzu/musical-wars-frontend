@@ -18,12 +18,12 @@ import UserStats from "../components/main/UserStats";
 import Statistics from "../types/Statistics";
 import { HeroApi } from "../API/HeroApi";
 import { EffectApi } from "../API/EffectApi";
-import StartButton from "../components/main/StartButton";
 import { StatisticsApi } from "../API/StatisticsApi";
 import { LobbyApi } from "../API/LobbyApi";
 import { AuthContext, LobbyContext } from "../App";
 import { StatsButton } from "../components/main/StatsButton";
 import { useNavigate } from "react-router-dom";
+import MyButton from "../components/utility/MyButton";
 
 const MainPage: FC = () => {
   const { username } = useContext(AuthContext);
@@ -79,8 +79,8 @@ const MainPage: FC = () => {
   const handleStart = () => {
     LobbyApi.createLobby()
       .then((response) => {
-        setLobbyId(response.data.lobbyId)
-        navFunction("/lobby")
+        setLobbyId(response.data.lobbyId);
+        navFunction("/lobby");
       })
       .catch((err) => console.log(err));
     // LobbySocket.connect();
@@ -92,7 +92,7 @@ const MainPage: FC = () => {
         <EntityCard
           entity={heroesList[currentHeroId]}
           imgSrc={heroesList[currentHeroId]?.imgSrc}
-          imgH='18em'
+          imgH="18em"
           onBuy={handleBuyHero}
           onNext={handleNextHero}
           onRefresh={handleRefreshHeroes}
@@ -221,7 +221,7 @@ const MainPage: FC = () => {
           </Box>
         </Flex>
         <Box top="650" left="40%" w="20%" alignItems="center" p="5">
-          <StartButton onPushButton={() => handleStart()}>START</StartButton>
+        <MyButton onPushButton={() => handleStart()}>START</MyButton>
         </Box>
       </VStack>
       <Box position="absolute" right="1" top="20">

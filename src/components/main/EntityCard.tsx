@@ -30,7 +30,12 @@ const EntityCard: FC<EntityCardProps> = (props) => {
       <Card maxW="md" rounded="md" shadow="md">
         <CardBody>
           {props.imgSrc !== undefined && (
-            <Image h={props.imgH} w="sm" src={props.imgSrc} borderRadius="Dark lg" />
+            <Image
+              h={props.imgH}
+              w="sm"
+              src={props.imgSrc}
+              borderRadius="Dark lg"
+            />
           )}
           <Stack mt="3" spacing="3">
             <Heading size="lg">{props.entity.name}</Heading>
