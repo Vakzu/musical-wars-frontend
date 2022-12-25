@@ -4,71 +4,10 @@ import AuthPasswordField from "../components/auth/AuthPasswordField";
 import AuthLoginField from "../components/auth/AuthLoginField";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import { AuthApi } from "../API/AuthApi";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthAlert from "../components/auth/AuthAlert";
 import { AuthContext } from "../App";
 import MyButton from "../components/utility/MyButton";
-
-const handleLogin = (
-  username: string,
-  password: string,
-  setInvaludPasswordFunc: (flag: boolean) => void,
-  navFuntion: NavigateFunction,
-  setUsername: (val: string) => void,
-  setUserId: (val: number) => void
-) => {
-  AuthApi.login({ username, password })
-    .then((resp) => {
-      setUsername(resp.data.username);
-      setUserId(resp.data.userId);
-      navFuntion("/main");
-    })
-    .catch((err) => setInvaludPasswordFunc(true));
-};
-
-const handleRegister = (
-  username: string,
-  password: string,
-  confirmPassword: string,
-  setInvaludPasswordFunc: (flag: boolean) => void,
-  setPasswordsNotMatchFunc: (flag: boolean) => void,
-  navFuntion: NavigateFunction,
-  setUsername: (val: string) => void,
-  setUserId: (val: number) => void
-) => {
-  if (password === confirmPassword) {
-    AuthApi.register({ username, password })
-      .then((resp) => {
-        setUsername(resp.data.username);
-        setUserId(resp.data.userId);
-        navFuntion("/main");
-      })
-      .catch((err) => setInvaludPasswordFunc(true));
-  } else {
-    setPasswordsNotMatchFunc(true);
-  }
-};
-
-const alertMessage = (
-  isInvalidPassword: boolean,
-  isPasswordsNotMatch: boolean
-) => {
-  if (isInvalidPassword) {
-    return "Invalid password";
-  }
-
-  if (isPasswordsNotMatch) {
-    return "Passwords doesn't match";
-  }
-};
-
-const clearPasswordStates = (
-  setInvaludPasswordFunc: (flag: boolean) => void,
-  setPasswordsNotMatchFunc: (flag: boolean) => void
-) => {
-  setInvaludPasswordFunc(false);
-  setPasswordsNotMatchFunc(false);
-};
 
 const AuthPage = () => {
   const { setUserId, setUsername } = useContext(AuthContext);
@@ -83,6 +22,50 @@ const AuthPage = () => {
   const { colorMode } = useColorMode();
 
   const navFunction = useNavigate();
+
+  const handleLogin = () => {
+    AuthApi.login({ username: loginValue, password: passwordValue })
+      .then((resp) => {
+        setUsername(resp.data.username);
+        setUserId(resp.data.userId);
+        localStorage.setItem("username", resp.data.username);
+        localStorage.setItem("userId", resp.data.userId.toString());
+        navFunction("/main");
+      })
+      .catch(() => setIsInvalidPassword(true));
+  };
+
+  const handleRegister = () => {
+    if (passwordValue === confirmPasswordValue) {
+      AuthApi.register({ username: loginValue, password: passwordValue })
+        .then((resp) => {
+          setUsername(resp.data.username);
+          setUserId(resp.data.userId);
+          navFunction("/main");
+        })
+        .catch(() => setIsInvalidPassword(true));
+    } else {
+      setIsPasswordsNotMatch(true);
+    }
+  };
+
+  const alertMessage = (
+    isInvalidPassword: boolean,
+    isPasswordsNotMatch: boolean
+  ) => {
+    if (isInvalidPassword) {
+      return "Invalid password";
+    }
+
+    if (isPasswordsNotMatch) {
+      return "Passwords doesn't match";
+    }
+  };
+
+  const clearPasswordStates = () => {
+    setIsInvalidPassword(false);
+    setIsPasswordsNotMatch(false);
+  };
 
   return (
     <Box className="AuthPage">
@@ -146,18 +129,8 @@ const AuthPage = () => {
             <MyButton
               type={"solid"}
               onPushButton={() => {
-                clearPasswordStates(
-                  setIsInvalidPassword,
-                  setIsPasswordsNotMatch
-                );
-                handleLogin(
-                  loginValue,
-                  passwordValue,
-                  setIsInvalidPassword,
-                  navFunction,
-                  setUsername,
-                  setUserId
-                );
+                clearPasswordStates();
+                handleLogin();
               }}
             >
               Login
@@ -165,20 +138,8 @@ const AuthPage = () => {
             <MyButton
               type="ghost"
               onPushButton={() => {
-                clearPasswordStates(
-                  setIsInvalidPassword,
-                  setIsPasswordsNotMatch
-                );
-                handleRegister(
-                  loginValue,
-                  passwordValue,
-                  confirmPasswordValue,
-                  setIsInvalidPassword,
-                  setIsPasswordsNotMatch,
-                  navFunction,
-                  setUsername,
-                  setUserId
-                );
+                clearPasswordStates();
+                handleRegister();
               }}
             >
               Sign up
