@@ -10,7 +10,7 @@ import { AuthContext } from "../App";
 import MyButton from "../components/utility/MyButton";
 
 const AuthPage = () => {
-  const { setUserId, setUsername } = useContext(AuthContext);
+  const { setIsAuth, setUserId, setUsername } = useContext(AuthContext);
 
   const [loginValue, setLoginValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
@@ -26,8 +26,10 @@ const AuthPage = () => {
   const handleLogin = () => {
     AuthApi.login({ username: loginValue, password: passwordValue })
       .then((resp) => {
+        setIsAuth(true);
         setUsername(resp.data.username);
         setUserId(resp.data.userId);
+        localStorage.setItem("isAuth", "true");
         localStorage.setItem("username", resp.data.username);
         localStorage.setItem("userId", resp.data.userId.toString());
         navFunction("/main");

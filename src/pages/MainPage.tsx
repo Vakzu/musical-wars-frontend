@@ -24,9 +24,10 @@ import { AuthContext, LobbyContext } from "../App";
 import { StatsButton } from "../components/main/StatsButton";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
+import { ExitButton } from "../components/main/ExitButton";
 
 const MainPage: FC = () => {
-  const { username } = useContext(AuthContext);
+  const { username, setIsAuth } = useContext(AuthContext);
   const { setLobbyId } = useContext(LobbyContext);
 
   const [heroesList, setHeroesList] = useState<Hero[]>([]);
@@ -84,6 +85,11 @@ const MainPage: FC = () => {
       })
       .catch((err) => console.log(err));
     // LobbySocket.connect();
+  };
+
+  const handleExit = () => {
+    setIsAuth(false);
+    localStorage.removeItem("isAuth");
   };
 
   const renderHeroCard = (): ReactNode => {
@@ -192,6 +198,13 @@ const MainPage: FC = () => {
         <Avatar bg="teal.500" />
         <Heading p="3%">Hello, {username ? username : "somebody"}</Heading>
       </Flex>
+      <ExitButton
+        aria-label="switch"
+        position="absolute"
+        top="5"
+        right="140"
+        onClick={handleExit}
+      />
       <StatsButton
         aria-label="switch"
         position="absolute"
@@ -221,7 +234,7 @@ const MainPage: FC = () => {
           </Box>
         </Flex>
         <Box top="650" left="40%" w="20%" alignItems="center" p="5">
-        <MyButton onPushButton={() => handleStart()}>START</MyButton>
+          <MyButton onPushButton={() => handleStart()}>START</MyButton>
         </Box>
       </VStack>
       <Box position="absolute" right="1" top="20">

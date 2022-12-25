@@ -6,8 +6,10 @@ import { createContext, useEffect, useState } from "react";
 import FightPage from "./pages/FightPage";
 
 interface IAuthContext {
+  isAuth: boolean;
   userId?: number;
   username?: string;
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
   setUserId: React.Dispatch<React.SetStateAction<number | undefined>>;
   setUsername: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
@@ -21,12 +23,14 @@ export const AuthContext = createContext({} as IAuthContext);
 export const LobbyContext = createContext({} as ILobbyContext);
 
 function App() {
+  const [isAuth, setIsAuth] = useState<boolean>(false);
   const [username, setUsername] = useState<string>();
   const [userId, setUserId] = useState<number>();
   const [lobbyId, setLobbyId] = useState<number>();
 
   useEffect(() => {
-    if (localStorage.getItem("username")) {
+    if (localStorage.getItem("isAuth")) {
+      setIsAuth(Boolean(localStorage.getItem("isAuth")));
       setUsername(localStorage.getItem("username")!);
       setUserId(Number(localStorage.getItem("userId")));
     }
@@ -35,8 +39,10 @@ function App() {
   return (
     <AuthContext.Provider
       value={{
+        isAuth,
         userId,
         username,
+        setIsAuth,
         setUserId,
         setUsername,
       }}
@@ -48,7 +54,7 @@ function App() {
         }}
       >
         <BrowserRouter>
-          {username !== undefined ? (
+          {isAuth !== false ? (
             <Routes>
               <Route path="/main" element={<MainPage />} />
               <Route path="/lobby" element={<LobbyPage />} />
