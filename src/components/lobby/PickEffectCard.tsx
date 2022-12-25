@@ -1,5 +1,4 @@
 import { FC, ReactNode, useEffect, useState } from "react";
-import Character from "../../types/Character";
 import {
   Button,
   ButtonGroup,
@@ -10,7 +9,6 @@ import {
   Stack,
   Heading,
   Text,
-  Image,
   HStack,
   Box,
 } from "@chakra-ui/react";
@@ -37,7 +35,7 @@ const PickEffectCard: FC<PickEffectCardProps> = (props) => {
   };
 
   const handlePick = () => {
-    if (props.onPick != undefined) props.onPick(currentEffect);
+    if (props.onPick !== undefined) props.onPick(currentEffect);
   };
 
   const handleNext = () => {

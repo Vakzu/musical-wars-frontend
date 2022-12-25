@@ -79,8 +79,8 @@ const MainPage: FC = () => {
   const handleStart = () => {
     LobbyApi.createLobby()
       .then((response) => {
-        setLobbyId(response.data.lobbyId)
-        navFunction("/lobby")
+        setLobbyId(response.data.lobbyId);
+        navFunction("/lobby");
       })
       .catch((err) => console.log(err));
     // LobbySocket.connect();
@@ -92,7 +92,7 @@ const MainPage: FC = () => {
         <EntityCard
           entity={heroesList[currentHeroId]}
           imgSrc={heroesList[currentHeroId]?.imgSrc}
-          imgH='18em'
+          imgH="18em"
           onBuy={handleBuyHero}
           onNext={handleNextHero}
           onRefresh={handleRefreshHeroes}

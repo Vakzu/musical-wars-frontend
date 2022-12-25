@@ -1,16 +1,16 @@
-import Entity from "./Entity"
+import Entity from "./Entity";
 
 export default interface Effect extends Entity {
-    stamina: number,
-    strength: number,
-    luck: number,
-    constitution: number
+  stamina: number;
+  strength: number;
+  luck: number;
+  constitution: number;
 }
 
 export type AllEffectsResponse = {
-    effects: Effect[]
-}
+  effects: Effect[];
+};
 
 export type BuyEffectRequest = {
-    effectId: number
-}
+  effectId: number;
+};

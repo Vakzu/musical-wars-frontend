@@ -1,11 +1,5 @@
 import { FC, ReactNode } from "react";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Heading,
-  Divider,
-} from "@chakra-ui/react";
+import { Card, CardBody, CardFooter, Heading, Divider } from "@chakra-ui/react";
 
 interface LobbySectionProps {
   sectionName: string;

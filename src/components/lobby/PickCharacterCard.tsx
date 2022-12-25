@@ -38,7 +38,7 @@ const PickCharacterCard: FC<PickCharacterCardProps> = (props) => {
   };
 
   const handlePick = () => {
-    if (props.onPick != undefined) props.onPick(currentCharacter);
+    if (props.onPick !== undefined) props.onPick(currentCharacter);
   };
 
   const handleNext = () => {

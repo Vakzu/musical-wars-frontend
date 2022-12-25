@@ -8,7 +8,9 @@ interface PersonNameProps {
 const PersonName: FC<PersonNameProps> = (props) => {
   return (
     <Box>
-      <Text fontSize="lg" as='b'>{props.name}</Text>
+      <Text fontSize="lg" as="b">
+        {props.name}
+      </Text>
     </Box>
   );
 };

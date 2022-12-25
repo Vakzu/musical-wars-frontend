@@ -8,7 +8,7 @@ export class AuthApi {
     bodyFormData.append("password", user.password);
 
     return api.post<AuthResponse>("/login", bodyFormData, {
-      headers: { 'Content-Type': `multipart/form-data` },
+      headers: { "Content-Type": `multipart/form-data` },
     });
   };
 

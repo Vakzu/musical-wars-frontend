@@ -144,7 +144,7 @@ const AuthPage = () => {
           </Box>
           <Flex align="center" justify="center" p="3">
             <AuthButton
-              type={'solid'}
+              type={"solid"}
               onPushButton={() => {
                 clearPasswordStates(
                   setIsInvalidPassword,
@@ -163,7 +163,7 @@ const AuthPage = () => {
               Login
             </AuthButton>
             <AuthButton
-              type='ghost'
+              type="ghost"
               onPushButton={() => {
                 clearPasswordStates(
                   setIsInvalidPassword,

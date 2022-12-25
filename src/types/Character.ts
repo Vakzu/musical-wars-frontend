@@ -6,5 +6,5 @@ export default interface Character {
 }
 
 export type AllCharactersResponse = {
-    characters: Character[]
-}
+  characters: Character[];
+};
