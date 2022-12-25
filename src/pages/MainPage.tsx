@@ -21,11 +21,12 @@ import { EffectApi } from "../API/EffectApi";
 import StartButton from "../components/main/StartButton";
 import { StatisticsApi } from "../API/StatisticsApi";
 import { LobbyApi } from "../API/LobbyApi";
-import { AuthContext } from "../App";
+import { AuthContext, LobbyContext } from "../App";
 import { StatsButton } from "../components/main/StatsButton";
 
 const MainPage: FC = () => {
   const { username } = useContext(AuthContext);
+  const { setLobbyId } = useContext(LobbyContext);
 
   const [heroesList, setHeroesList] = useState<Hero[]>([]);
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
@@ -74,7 +75,9 @@ const MainPage: FC = () => {
   };
 
   const handleStart = () => {
-    LobbyApi.createLobby();
+    LobbyApi.createLobby()
+      .then((response) => setLobbyId(response.data.lobbyId))
+      .catch((err) => console.log(err));
     // LobbySocket.connect();
   };
 
