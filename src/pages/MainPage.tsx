@@ -92,6 +92,7 @@ const MainPage: FC = () => {
         <EntityCard
           entity={heroesList[currentHeroId]}
           imgSrc={heroesList[currentHeroId]?.imgSrc}
+          imgH='18em'
           onBuy={handleBuyHero}
           onNext={handleNextHero}
           onRefresh={handleRefreshHeroes}
