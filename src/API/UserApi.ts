@@ -9,4 +9,10 @@ export class UserApi {
   static getOnlineUsers = () => {
     return api.get<UserOnlineResponse>("/user/online");
   };
+
+  static inviteToLobby = (username: string, lobbyId: number) => {
+    return api.post<void>(
+      "/user/invite?lobbyId=" + lobbyId + "&userName=" + username
+    );
+  };
 }

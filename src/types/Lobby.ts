@@ -3,7 +3,7 @@ export type LobbyCreateResponse = {
 }
 
 export type LobbyRequest = {
-    lobbyId: string
+    lobbyId: number
 }
 
 export type LobbyUsersResponse = {
