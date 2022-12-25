@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import { Box, Flex, Image, useColorMode } from "@chakra-ui/react";
 import AuthPasswordField from "../components/auth/AuthPasswordField";
 import AuthLoginField from "../components/auth/AuthLoginField";
-import AuthButton from "../components/auth/AuthButton";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import { AuthApi } from "../API/AuthApi";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import AuthAlert from "../components/auth/AuthAlert";
 import { AuthContext } from "../App";
+import MyButton from "../components/utility/MyButton";
 
 const handleLogin = (
   username: string,
@@ -143,7 +143,7 @@ const AuthPage = () => {
             />
           </Box>
           <Flex align="center" justify="center" p="3">
-            <AuthButton
+            <MyButton
               type={"solid"}
               onPushButton={() => {
                 clearPasswordStates(
@@ -161,8 +161,8 @@ const AuthPage = () => {
               }}
             >
               Login
-            </AuthButton>
-            <AuthButton
+            </MyButton>
+            <MyButton
               type="ghost"
               onPushButton={() => {
                 clearPasswordStates(
@@ -182,7 +182,7 @@ const AuthPage = () => {
               }}
             >
               Sign up
-            </AuthButton>
+            </MyButton>
           </Flex>
         </Box>
       </Flex>

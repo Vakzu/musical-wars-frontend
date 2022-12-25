@@ -4,13 +4,13 @@ import LobbySection from "../components/lobby/LobbySection";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import PersonName from "../components/lobby/PersonName";
 import InviteCheckbox from "../components/lobby/InviteCheckbox";
-import StartButton from "../components/main/StartButton";
 import PickCharacterCard from "../components/lobby/PickCharacterCard";
 import PickEffectCard from "../components/lobby/PickEffectCard";
 import { UserApi } from "../API/UserApi";
 import { LobbyApi } from "../API/LobbyApi";
 import { LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import MyButton from "../components/utility/MyButton";
 
 const LobbyPage: FC = () => {
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
@@ -99,8 +99,8 @@ const LobbyPage: FC = () => {
         </Flex>
         <Box top="650" left="44%" w="12%" alignItems="center">
           <VStack>
-            <StartButton onPushButton={() => handleStart()}>START</StartButton>
-            <StartButton onPushButton={() => handleLeave()}>LEAVE</StartButton>
+            <MyButton onPushButton={() => handleStart()}>START</MyButton>
+            <MyButton onPushButton={() => handleLeave()}>LEAVE</MyButton>
           </VStack>
         </Box>
       </VStack>
