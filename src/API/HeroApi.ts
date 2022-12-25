@@ -7,6 +7,8 @@ export class HeroApi {
   };
 
   static buyHero = (request: BuyHeroRequest) => {
-    return api.post<void>("/hero/buy?heroId=" + request.heroId);
+    return api.post<void>("/hero/buy", null, {
+      params: { heroId: request.heroId },
+    });
   };
 }

@@ -4,16 +4,20 @@ import CustomIcon from "./CustomIcon";
 
 interface InviteCheckboxProps {
   children: ReactNode;
-  onClick: () => void
+  onClick: () => void;
 }
 
 const InviteCheckbox: FC<InviteCheckboxProps> = (props) => {
   const handleClick = (isChecked: boolean) => {
-    if (isChecked) props.onClick()
-  }
+    if (isChecked) props.onClick();
+  };
 
   return (
-    <Checkbox icon={<CustomIcon />} colorScheme="cyan" onChange={(e) => handleClick(e.target.checked)}>
+    <Checkbox
+      icon={<CustomIcon />}
+      colorScheme="cyan"
+      onChange={(e) => handleClick(e.target.checked)}
+    >
       {props.children}
     </Checkbox>
   );

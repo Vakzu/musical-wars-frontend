@@ -5,23 +5,26 @@ import {
   CardFooter,
   Heading,
   Divider,
+  CardProps,
 } from "@chakra-ui/react";
 
 interface LobbySectionProps {
   sectionName: string;
-  w?: any;
-  h?: any;
   children: ReactNode;
 }
 
-const LobbySection: FC<LobbySectionProps> = (props) => {
+const LobbySection: FC<LobbySectionProps & CardProps> = ({
+  sectionName,
+  children,
+  ...props
+}) => {
   return (
-    <Card>
+    <Card {...props}>
       <CardBody>
-        <Heading size="md">{props.sectionName}</Heading>
+        <Heading size="md">{sectionName}</Heading>
       </CardBody>
       <Divider />
-      <CardFooter>{props.children}</CardFooter>
+      <CardFooter>{children}</CardFooter>
     </Card>
   );
 };

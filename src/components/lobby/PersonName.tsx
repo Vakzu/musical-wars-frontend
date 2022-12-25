@@ -5,10 +5,12 @@ interface PersonNameProps {
   name: string;
 }
 
-const PersonName: FC<PersonNameProps> = (props) => {
+const PersonName: FC<PersonNameProps> = ({ name }) => {
   return (
     <Box>
-      <Text fontSize="lg" as='b'>{props.name}</Text>
+      <Text fontSize="lg" as="b">
+        {name}
+      </Text>
     </Box>
   );
 };

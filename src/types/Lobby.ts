@@ -1,16 +1,16 @@
 export type LobbyCreateResponse = {
-    lobbyId: number
-}
+  lobbyId: number;
+};
 
 export type LobbyRequest = {
-    lobbyId: number
-}
+  lobbyId: number;
+};
 
 export type LobbyUsersResponse = {
-    userNames: string[]
-}
+  userNames: string[];
+};
 
 export type LobbyStatusResponse = {
-    lobbyId?: number,
-    isOwner?: boolean
-}
+  lobbyId?: number;
+  isOwner?: boolean;
+};

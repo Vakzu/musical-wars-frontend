@@ -7,6 +7,8 @@ export class EffectApi {
   };
 
   static buyEffect = (request: BuyEffectRequest) => {
-    return api.post<void>("/effect/buy?effectId=" + request.effectId);
+    return api.post<void>("/effect/buy", null, {
+      params: { effectId: request.effectId },
+    });
   };
 }
