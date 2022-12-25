@@ -23,6 +23,7 @@ import { StatisticsApi } from "../API/StatisticsApi";
 import { LobbyApi } from "../API/LobbyApi";
 import { AuthContext, LobbyContext } from "../App";
 import { StatsButton } from "../components/main/StatsButton";
+import { useNavigate } from "react-router-dom";
 
 const MainPage: FC = () => {
   const { username } = useContext(AuthContext);
@@ -36,6 +37,8 @@ const MainPage: FC = () => {
 
   const { isOpen, onToggle } = useDisclosure();
   const [statistics, setStatistics] = useState<Statistics | undefined>();
+
+  const navFunction = useNavigate();
 
   const handleBuyHero = () => {
     HeroApi.buyHero({ heroId: currentHeroId });
@@ -62,7 +65,6 @@ const MainPage: FC = () => {
   };
 
   const handleRefreshHeroes = () => {
-    console.log("Resfresh");
     HeroApi.getAll()
       .then((response) => setHeroesList(response.data.heroes))
       .catch((err) => console.log(err));
@@ -76,7 +78,10 @@ const MainPage: FC = () => {
 
   const handleStart = () => {
     LobbyApi.createLobby()
-      .then((response) => setLobbyId(response.data.lobbyId))
+      .then((response) => {
+        setLobbyId(response.data.lobbyId)
+        navFunction("/lobby")
+      })
       .catch((err) => console.log(err));
     // LobbySocket.connect();
   };
