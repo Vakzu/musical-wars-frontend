@@ -1,4 +1,4 @@
-import { Box, Flex, VStack } from "@chakra-ui/react";
+import { Box, Flex, VStack, useDisclosure } from "@chakra-ui/react";
 import { FC, useContext, useEffect, useState } from "react";
 import LobbySection from "../components/lobby/LobbySection";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
@@ -17,6 +17,8 @@ const LobbyPage: FC = () => {
 
   const [lobbyUsers, setLobbyUsers] = useState<string[]>([]);
 
+  const { isOpen, onToggle } = useDisclosure();
+
   const { lobbyId } = useContext(LobbyContext);
 
   const navFunction = useNavigate();
@@ -25,20 +27,36 @@ const LobbyPage: FC = () => {
 
   const handlePickEffect = () => {};
 
-  const inviteUser = (username: string) => {
-    UserApi.inviteToLobby(username, lobbyId!);
-  };
+  const inviteUser = (username: string) => {};
 
   const handleLeave = () => {
+    if (isOpen) {
+      handleReady();
+    }
+
     LobbyApi.leaveLobby({ lobbyId: lobbyId! })
       .then(() => navFunction("/main"))
       .catch((err) => console.log(err));
   };
 
   const handleStart = () => {
-    LobbyApi.startLobby({ lobbyId: lobbyId! })
-      .then(() => navFunction("/fight"))
-      .catch((err) => console.log(err));
+    if (isOpen) {
+      LobbyApi.startLobby({ lobbyId: lobbyId! })
+        .then(() => navFunction("/fight"))
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const handleReady = () => {
+    if (isOpen) {
+      LobbyApi.setReady({ lobbyId: lobbyId! })
+        .then(onToggle)
+        .catch((err) => console.log(err));
+    } else {
+      LobbyApi.cancelReady({ lobbyId: lobbyId! })
+        .then(onToggle)
+        .catch((err) => console.log(err));
+    }
   };
 
   useEffect(() => {
@@ -101,11 +119,22 @@ const LobbyPage: FC = () => {
           <VStack>
             <MyButton onPushButton={() => handleStart()}>START</MyButton>
             <MyButton onPushButton={() => handleLeave()}>LEAVE</MyButton>
+            <MyButton
+              type={isOpen ? "solid" : "ghost"}
+              colorScheme={isOpen ? "green" : "red"}
+              onPushButton={handleReady}
+            >
+              READY
+            </MyButton>
           </VStack>
         </Box>
       </VStack>
     </Box>
   );
 };
+/*
+1) Приглашение не может потом поменятся на не приглашен
+2) Добавить в сокет хендлер который сигнализиирует о том что человека пригласили, он вошел
+*/
 
 export default LobbyPage;

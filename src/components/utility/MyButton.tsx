@@ -6,6 +6,7 @@ interface MyButtonProps {
   isLoading?: boolean;
   onPushButton: () => void;
   type?: "solid" | "ghost";
+  colorScheme?: string,
   children: ReactNode;
 }
 
@@ -14,7 +15,7 @@ const MyButton: FC<MyButtonProps> = (props) => {
     <Button
       w="100%"
       isLoading={props.isLoading}
-      colorScheme="teal"
+      colorScheme={props.colorScheme ? props.colorScheme : 'teal'}
       variant={props.type ? props.type : "solid"}
       size="lg"
       onClick={props.onPushButton}
