@@ -1,4 +1,12 @@
-import { Box, Flex, HStack, VStack } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  HStack,
+  Heading,
+  VStack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Hero from "../types/Hero";
@@ -15,6 +23,7 @@ import { StatisticsApi } from "../API/StatisticsApi";
 import { LobbyApi } from "../API/LobbyApi";
 import { AuthContext } from "../App";
 import LobbySocket from "../WS/LobbySocket";
+import { StatsButton } from "../components/main/StatsButton";
 
 const MainPage: FC = () => {
   const { userId, username } = useContext(AuthContext);
@@ -25,7 +34,8 @@ const MainPage: FC = () => {
   const [currentHeroId, setCurrentHeroId] = useState<number>(0);
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
 
-  const [statistics, setStatistics] = useState<Statistics>();
+  const { isOpen, onToggle } = useDisclosure();
+  const [statistics, setStatistics] = useState<Statistics | undefined>();
 
   const handleBuyHero = () => {
     HeroApi.buyHero({ heroId: currentHeroId });
@@ -36,31 +46,31 @@ const MainPage: FC = () => {
   };
 
   const handleNextHero = () => {
-    if (heroesList[currentHeroId]?.id + 1 === heroesList.length) {
-      setCurrentHeroId(currentHeroId + 1);
-    } else {
+    if (currentHeroId + 1 === heroesList.length) {
       setCurrentHeroId(0);
+    } else {
+      setCurrentHeroId(currentHeroId + 1);
     }
   };
 
   const handleNextEffect = () => {
-    if (effectsList[currentEffectId]?.id + 1 === effectsList.length) {
-      setCurrentEffectId(currentEffectId + 1);
-    } else {
+    if (currentEffectId + 1 === effectsList.length) {
       setCurrentEffectId(0);
+    } else {
+      setCurrentEffectId(currentEffectId + 1);
     }
   };
 
   const handleRefreshHeroes = () => {
     console.log("Resfresh");
     HeroApi.getAll()
-      .then((heroes) => setHeroesList(heroes.data?.heroes))
+      .then((response) => setHeroesList(response.data.heroes))
       .catch((err) => console.log(err));
   };
 
   const handleRefreshEffects = () => {
     EffectApi.getAll()
-      .then((effects) => setEffectsList(effects.data?.effects))
+      .then((response) => setEffectsList(response.data.effects))
       .catch((err) => console.log(err));
   };
 
@@ -78,7 +88,7 @@ const MainPage: FC = () => {
           onBuy={handleBuyHero}
           onNext={handleNextHero}
           onRefresh={handleRefreshHeroes}
-          defaultText="Heroes not found!"
+          defaultText="Heroes not found"
         >
           <HStack>
             <Box>
@@ -96,21 +106,21 @@ const MainPage: FC = () => {
       return (
         <EntityCard
           onRefresh={handleRefreshHeroes}
-          defaultText="Heroes not found!"
+          defaultText="Heroes not found"
         />
       );
     }
   };
 
   const renderEffectCard = (): ReactNode => {
-    if (effectsList[currentHeroId]) {
+    if (effectsList[currentEffectId]) {
       return (
         <EntityCard
-          entity={effectsList[currentHeroId]}
+          entity={effectsList[currentEffectId]}
           onBuy={handleBuyEffect}
           onNext={handleNextEffect}
           onRefresh={handleRefreshEffects}
-          defaultText="Heroes not found!"
+          defaultText="Effects not found"
         >
           <HStack>
             <Box w="40px" h="40px" color="#107896">
@@ -136,7 +146,7 @@ const MainPage: FC = () => {
       return (
         <EntityCard
           onRefresh={handleRefreshEffects}
-          defaultText="Effects not found!"
+          defaultText="Effects not found"
         />
       );
     }
@@ -145,27 +155,42 @@ const MainPage: FC = () => {
   useEffect(() => {
     HeroApi.getAll()
       .then((response) => {
-        setHeroesList(response.data?.heroes);
+        setHeroesList(response.data.heroes);
         setCurrentHeroId(0);
       })
       .catch((err) => console.log(err));
 
     EffectApi.getAll()
       .then((response) => {
-        setEffectsList(response.data.effects ? response.data.effects : []);
+        setEffectsList(response.data.effects);
         setCurrentEffectId(0);
       })
       .catch((err) => console.log(err));
 
-    // StatisticsApi.getStats()
-    //   .then((response) => {
-    //     setStatistics(response.data.statistics);
-    //   })
-    //   .catch((err) => console.log(err));
+    StatisticsApi.getStats()
+      .then((response) => setStatistics(response.data?.statistics))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
     <Box className="MainPage">
+      <Flex
+        position="absolute"
+        left="5"
+        align="center"
+        // justify="center"
+        w="lg"
+      >
+        <Avatar bg="teal.500" />
+        <Heading p="3%">Hello, {username ? username : "somebody"}</Heading>
+      </Flex>
+      <StatsButton
+        aria-label="switch"
+        position="absolute"
+        top="5"
+        right="20"
+        onClick={onToggle}
+      />
       <DarkModeSwitch
         aria-label="switch"
         position="absolute"
@@ -191,8 +216,8 @@ const MainPage: FC = () => {
           <StartButton onPushButton={() => handleStart()}>START</StartButton>
         </Box>
       </VStack>
-      <Box p="5" position="absolute" right="10" top="10" w="200">
-        <UserStats statistics={statistics} />
+      <Box position="absolute" right="1" top="20">
+        <UserStats isOpen={isOpen} statistics={statistics} />
       </Box>
     </Box>
   );

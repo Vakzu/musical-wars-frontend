@@ -29,10 +29,10 @@ const EntityCard: FC<EntityCardProps> = (props) => {
       <Card maxW="md" rounded="md" shadow="md">
         <CardBody>
           {props.imgSrc !== undefined && (
-            <Image maxH="sm" src={props.imgSrc} borderRadius="Dark lg" />
+            <Image h='18em' w='sm' src={props.imgSrc} borderRadius="Dark lg" />
           )}
-          <Stack mt="6" spacing="3">
-            <Heading size="md">{props.entity.name}</Heading>
+          <Stack mt="3" spacing="3">
+            <Heading size="lg">{props.entity.name}</Heading>
             <Text color="blue.600" fontSize="2xl">
               {props.children}
             </Text>
