@@ -1,4 +1,4 @@
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Flex, VStack } from "@chakra-ui/react";
 import { FC } from "react";
 import LobbySection from "../components/lobby/LobbySection";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
@@ -30,61 +30,49 @@ const LobbyPage: FC<LobbyPageProps> = (props) => {
         top="5"
         right="5"
       />
-      <VStack
-        position="absolute"
-        align="center"
-        justify="center"
-        w="60%"
-        p="3%"
-        spacing="4%"
-      >
-        <Box w="90%">
-          <LobbySection sectionName="ONLINE">
-            <VStack>
-              {onlineUsers.map((user) => (
-                <Box>
-                  <InviteCheckbox>
+      <Flex position="absolute" justify="center" align="center" top="20" w='100%'>
+        <VStack align="center" justify="center" w="60%" spacing="4%">
+          <Box w="90%">
+            <LobbySection sectionName="ONLINE">
+              <VStack>
+                {onlineUsers.map((user) => (
+                  <Box key={user}>
+                    <InviteCheckbox>
+                      <PersonName name={user} />
+                    </InviteCheckbox>
+                  </Box>
+                ))}
+              </VStack>
+            </LobbySection>
+          </Box>
+          <Box w="90%">
+            <LobbySection sectionName="LOBBY">
+              <VStack>
+                {lobbyUsers.map((user) => (
+                  <Box key={user}>
                     <PersonName name={user} />
-                  </InviteCheckbox>
-                </Box>
-              ))}
-            </VStack>
-          </LobbySection>
-        </Box>
-        <Box w="90%">
-          <LobbySection sectionName="LOBBY">
-            {lobbyUsers.map((user) => (
-              <Box>
-                <PersonName name={user} />
-              </Box>
-            ))}
-          </LobbySection>
-        </Box>
-      </VStack>
+                  </Box>
+                ))}
+              </VStack>
+            </LobbySection>
+          </Box>
+        </VStack>
 
-      <VStack
-        position="absolute"
-        align="center"
-        justify="center"
-        right="0%"
-        w="40%"
-        p="3%"
-        spacing="4%"
-      >
-        <Box w="100%">
-          <EntityCard
-            onRefresh={() => {}}
-            defaultText="Heroes not found!"
-          ></EntityCard>
-        </Box>
-        <Box w="100%">
-          <EntityCard
-            onRefresh={() => {}}
-            defaultText="Effects not found!"
-          ></EntityCard>
-        </Box>
-      </VStack>
-
+        <VStack align="center" justify="center" w="40%" spacing="4%">
+          <Box w="100%">
+            <EntityCard
+              onRefresh={() => {}}
+              defaultText="Heroes not found!"
+            ></EntityCard>
+          </Box>
+          <Box w="100%">
+            <EntityCard
+              onRefresh={() => {}}
+              defaultText="Effects not found!"
+            ></EntityCard>
+          </Box>
+        </VStack>
+      </Flex>
       <Box pos="absolute" top="650" left="44%" w="12%" alignItems="center">
         <VStack>
           <StartButton onPushButton={() => handleStart()}>START</StartButton>
