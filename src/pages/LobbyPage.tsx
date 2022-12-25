@@ -10,7 +10,7 @@ import PickEffectCard from "../components/lobby/PickEffectCard";
 import { UserApi } from "../API/UserApi";
 import { LobbyApi } from "../API/LobbyApi";
 import { LobbyContext } from "../App";
-
+import { useNavigate } from "react-router-dom";
 
 const LobbyPage: FC = () => {
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
@@ -18,6 +18,8 @@ const LobbyPage: FC = () => {
   const [lobbyUsers, setLobbyUsers] = useState<string[]>([]);
 
   const { lobbyId } = useContext(LobbyContext);
+
+  const navFunction = useNavigate();
 
   const handlePickCharacter = () => {};
 
@@ -28,11 +30,15 @@ const LobbyPage: FC = () => {
   };
 
   const handleLeave = () => {
-    LobbyApi.leaveLobby({ lobbyId: lobbyId! });
+    LobbyApi.leaveLobby({ lobbyId: lobbyId! })
+      .then(() => navFunction("/main"))
+      .catch((err) => console.log(err));
   };
 
   const handleStart = () => {
-    LobbyApi.startLobby({ lobbyId: lobbyId! });
+    LobbyApi.startLobby({ lobbyId: lobbyId! })
+      .then(() => navFunction("/fight"))
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
