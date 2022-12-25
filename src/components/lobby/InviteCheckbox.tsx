@@ -1,24 +1,30 @@
 import { Checkbox } from "@chakra-ui/react";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useState } from "react";
 import CustomIcon from "./CustomIcon";
 
 interface InviteCheckboxProps {
-  children: ReactNode;
   onClick: () => void;
+  children: ReactNode;
 }
 
-const InviteCheckbox: FC<InviteCheckboxProps> = (props) => {
+const InviteCheckbox: FC<InviteCheckboxProps> = ({ onClick, children }) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const handleClick = (isChecked: boolean) => {
-    if (isChecked) props.onClick();
+    if (isChecked) {
+      onClick();
+      setIsDisabled(true);
+    }
   };
 
   return (
     <Checkbox
       icon={<CustomIcon />}
       colorScheme="cyan"
+      isDisabled={isDisabled}
       onChange={(e) => handleClick(e.target.checked)}
     >
-      {props.children}
+      {children}
     </Checkbox>
   );
 };
