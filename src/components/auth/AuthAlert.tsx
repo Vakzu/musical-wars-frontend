@@ -1,16 +1,18 @@
-import { Alert, AlertIcon } from "@chakra-ui/react";
+import { Alert, AlertIcon, AlertProps } from "@chakra-ui/react";
 import { FC, ReactNode } from "react";
 
 interface AuthAlertFieldProps {
   children: ReactNode;
-  status: any;
 }
 
-const AuthAlert: FC<AuthAlertFieldProps> = (props) => {
+const AuthAlert: FC<AuthAlertFieldProps & AlertProps> = ({
+  children,
+  ...props
+}) => {
   return (
-    <Alert status={props.status} rounded="md" shadow="md">
+    <Alert {...props} rounded="md" shadow="md">
       <AlertIcon />
-      {props.children}
+      {children}
     </Alert>
   );
 };

@@ -111,7 +111,7 @@ const AuthPage = () => {
           <Box p="1">
             <AuthLoginField
               placeholder="Login"
-              inputSize="md"
+              size="md"
               field={loginValue}
               setField={setLoginValue}
             />

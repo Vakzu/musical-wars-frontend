@@ -21,7 +21,7 @@ interface PickEffectCardProps {
   children?: ReactNode;
 }
 
-const PickEffectCard: FC<PickEffectCardProps> = (props) => {
+const PickEffectCard: FC<PickEffectCardProps> = ({onPick, children}) => {
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
 
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
@@ -35,7 +35,7 @@ const PickEffectCard: FC<PickEffectCardProps> = (props) => {
   };
 
   const handlePick = () => {
-    if (props.onPick !== undefined) props.onPick(currentEffect);
+    if (onPick !== undefined) onPick(currentEffect);
   };
 
   const handleNext = () => {
