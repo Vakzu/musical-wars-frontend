@@ -29,9 +29,9 @@ const LobbyPage: FC = () => {
 
   const stompClient = useStompClient();
 
-  useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
-    handleStartFight(message.body)
-  );
+  // useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
+  //   handleStartFight(message.body)
+  // );
 
   const handlePickCharacter = () => {};
 

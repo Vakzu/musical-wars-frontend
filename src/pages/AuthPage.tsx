@@ -25,7 +25,7 @@ const AuthPage = () => {
 
   const navFunction = useNavigate();
 
-  const stompClient = useStompClient();
+  // const stompClient = useStompClient();
 
   const handleLogin = () => {
     AuthApi.login({ username: loginValue, password: passwordValue })
@@ -43,12 +43,12 @@ const AuthPage = () => {
         localStorage.setItem("username", resp.data.username);
         localStorage.setItem("userId", resp.data.userId.toString());
 
-        if (stompClient) {
-          stompClient.publish({
-            destination: "/game/online",
-            body: String(msg),
-          });
-        }
+        // if (stompClient) {
+        //   stompClient.publish({
+        //     destination: "/game/online",
+        //     body: String(msg),
+        //   });
+        // }
       })
       .catch(() => setIsInvalidPassword(true));
   };

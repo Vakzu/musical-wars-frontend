@@ -43,22 +43,22 @@ const MainPage: FC = () => {
 
   const navFunction = useNavigate();
 
-  const stompClient = useStompClient();
+  // const stompClient = useStompClient();
 
-  useSubscription("/topic/online", (message) =>
-    handleChangeOnline(message.body)
-  );
+  // useSubscription("/topic/online", (message) =>
+  //   handleChangeOnline(message.body)
+  // );
 
-  useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
-    handleChangeLobbyMembers(message.body)
-  );
-  useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
-    handleChangeReadyState(message.body)
-  );
+  // useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
+  //   handleChangeLobbyMembers(message.body)
+  // );
+  // useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
+  //   handleChangeReadyState(message.body)
+  // );
 
-  useSubscription("/user/" + userId + "/queue/invites", (message) =>
-    handleInvite(message.body)
-  );
+  // useSubscription("/user/" + userId + "/queue/invites", (message) =>
+  //   handleInvite(message.body)
+  // );
 
   const handleBuyHero = () => {
     HeroApi.buyHero({ heroId: currentHeroId });
@@ -117,12 +117,12 @@ const MainPage: FC = () => {
     setIsAuth(false);
     localStorage.removeItem("isAuth");
 
-    if (stompClient) {
-      stompClient.publish({
-        destination: "/game/online",
-        body: String(msg),
-      });
-    }
+    // if (stompClient) {
+    //   stompClient.publish({
+    //     destination: "/game/online",
+    //     body: String(msg),
+    //   });
+    // }
   };
 
   //need to parse MembersChangeMessage
