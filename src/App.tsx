@@ -36,7 +36,7 @@ export const LobbyContext = createContext({} as ILobbyContext);
 export const WebSocketContext = createContext({} as IWebSocketContext);
 
 const App: FC = () => {
-  const [isAuth, setIsAuth] = useState<boolean>(true);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
   const [username, setUsername] = useState<string>();
   const [userId, setUserId] = useState<number>();
 

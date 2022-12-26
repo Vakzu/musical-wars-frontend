@@ -56,10 +56,8 @@ const AuthPage = () => {
   const handleRegister = () => {
     if (passwordValue === confirmPasswordValue) {
       AuthApi.register({ username: loginValue, password: passwordValue })
-        .then((resp) => {
-          setUsername(resp.data.username);
-          setUserId(resp.data.userId);
-          navFunction("/main");
+        .then(() => {
+          handleLogin()
         })
         .catch(() => setIsInvalidPassword(true));
     } else {
