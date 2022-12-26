@@ -9,13 +9,18 @@ export class AuthApi {
 
     return api.post<AuthResponse>("/login", bodyFormData, {
       headers: { "Content-Type": `multipart/form-data` },
+      withCredentials: true,
     });
   };
 
   static register = (user: RegisterRequest) => {
-    return api.post<AuthResponse>("/register", {
-      username: user.username,
-      password: user.password,
-    });
+    return api.post<AuthResponse>(
+      "/register",
+      {
+        username: user.username,
+        password: user.password,
+      },
+      { withCredentials: true }
+    );
   };
 }
