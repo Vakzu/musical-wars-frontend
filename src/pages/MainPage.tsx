@@ -25,10 +25,12 @@ import { StatsButton } from "../components/main/StatsButton";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { ExitButton } from "../components/main/ExitButton";
+import { useStompClient, useSubscription } from "react-stomp-hooks";
+import { MembersChangeMessage } from "../types/WSMessage";
 
 const MainPage: FC = () => {
-  const { username, setIsAuth } = useContext(AuthContext);
-  const { setLobbyId } = useContext(LobbyContext);
+  const { userId, username, setIsAuth } = useContext(AuthContext);
+  const { lobbyId, setLobbyId } = useContext(LobbyContext);
 
   const [heroesList, setHeroesList] = useState<Hero[]>([]);
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
@@ -40,6 +42,23 @@ const MainPage: FC = () => {
   const [statistics, setStatistics] = useState<Statistics | undefined>();
 
   const navFunction = useNavigate();
+
+  const stompClient = useStompClient();
+
+  useSubscription("/topic/online", (message) =>
+    handleChangeOnline(message.body)
+  );
+
+  useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
+    handleChangeLobbyMembers(message.body)
+  );
+  useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
+    handleChangeReadyState(message.body)
+  );
+
+  useSubscription("/user/" + userId + "/queue/invites", (message) =>
+    handleInvite(message.body)
+  );
 
   const handleBuyHero = () => {
     HeroApi.buyHero({ heroId: currentHeroId });
@@ -80,17 +99,43 @@ const MainPage: FC = () => {
   const handleStart = () => {
     LobbyApi.createLobby()
       .then((response) => {
-        setLobbyId(response.data.lobbyId);
-        navFunction("/lobby");
+        if (response.data.lobbyId) {
+          setLobbyId(response.data.lobbyId);
+          navFunction("/lobby");
+        }
       })
       .catch((err) => console.log(err));
-    // LobbySocket.connect();
   };
 
   const handleExit = () => {
+    const msg: MembersChangeMessage = {
+      type: "LEAVE",
+      userId: userId!,
+      username: username!,
+    };
+
     setIsAuth(false);
     localStorage.removeItem("isAuth");
+
+    if (stompClient) {
+      stompClient.publish({
+        destination: "/game/online",
+        body: String(msg),
+      });
+    }
   };
+
+  //need to parse MembersChangeMessage
+  const handleChangeOnline = (onlineMessageBody: string) => {};
+
+  //need to parse MembersChangeMessage
+  const handleChangeLobbyMembers = (lobbyMembersChangeBody: string) => {};
+
+  //need to parse ReadyStateChangeMessage
+  const handleChangeReadyState = (changeReadyStateBody: string) => {};
+
+  //need to parse InviteLobbyMessage
+  const handleInvite = (inviteBody: string) => {};
 
   const renderHeroCard = (): ReactNode => {
     if (heroesList[currentHeroId]) {

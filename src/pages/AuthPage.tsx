@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import AuthAlert from "../components/auth/AuthAlert";
 import { AuthContext } from "../App";
 import MyButton from "../components/utility/MyButton";
+import { useStompClient } from "react-stomp-hooks";
+import { MembersChangeMessage } from "../types/WSMessage";
 
 const AuthPage = () => {
   const { setIsAuth, setUserId, setUsername } = useContext(AuthContext);
@@ -23,16 +25,30 @@ const AuthPage = () => {
 
   const navFunction = useNavigate();
 
+  const stompClient = useStompClient();
+
   const handleLogin = () => {
     AuthApi.login({ username: loginValue, password: passwordValue })
       .then((resp) => {
+        const msg: MembersChangeMessage = {
+          type: "JOIN",
+          userId: resp.data.userId,
+          username: resp.data.username,
+        };
+
         setIsAuth(true);
         setUsername(resp.data.username);
         setUserId(resp.data.userId);
         localStorage.setItem("isAuth", "true");
         localStorage.setItem("username", resp.data.username);
         localStorage.setItem("userId", resp.data.userId.toString());
-        navFunction("/main");
+
+        if (stompClient) {
+          stompClient.publish({
+            destination: "/game/online",
+            body: String(msg),
+          });
+        }
       })
       .catch(() => setIsInvalidPassword(true));
   };

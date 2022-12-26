@@ -8,9 +8,11 @@ import PickCharacterCard from "../components/lobby/PickCharacterCard";
 import PickEffectCard from "../components/lobby/PickEffectCard";
 import { UserApi } from "../API/UserApi";
 import { LobbyApi } from "../API/LobbyApi";
-import { LobbyContext } from "../App";
+import { AuthContext, LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
+import { useStompClient, useSubscription } from "react-stomp-hooks";
+import { InviteLobbyMessage, StartFightMessage } from "../types/WSMessage";
 
 const LobbyPage: FC = () => {
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
@@ -19,15 +21,36 @@ const LobbyPage: FC = () => {
 
   const { isOpen, onToggle } = useDisclosure();
 
+  const { username } = useContext(AuthContext);
+
   const { lobbyId } = useContext(LobbyContext);
 
   const navFunction = useNavigate();
+
+  const stompClient = useStompClient();
+
+  useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
+    handleStartFight(message.body)
+  );
 
   const handlePickCharacter = () => {};
 
   const handlePickEffect = () => {};
 
-  const inviteUser = (username: string) => {};
+  const inviteUser = (recepientName: string) => {
+    const msg: InviteLobbyMessage = {
+      senderName: username!,
+      recepientName: recepientName,
+      lobbyId: lobbyId!,
+    };
+
+    if (stompClient) {
+      stompClient.publish({
+        destination: "/game/invite",
+        body: String(msg),
+      });
+    }
+  };
 
   const handleLeave = () => {
     if (isOpen) {
@@ -49,15 +72,18 @@ const LobbyPage: FC = () => {
 
   const handleReady = () => {
     if (isOpen) {
-      LobbyApi.setReady({ lobbyId: lobbyId! })
+      LobbyApi.cancelReady({ lobbyId: lobbyId! })
         .then(onToggle)
         .catch((err) => console.log(err));
     } else {
-      LobbyApi.cancelReady({ lobbyId: lobbyId! })
+      LobbyApi.setReady({ lobbyId: lobbyId! })
         .then(onToggle)
         .catch((err) => console.log(err));
     }
   };
+
+  //need to parse StartFightMessage
+  const handleStartFight = (startFightMessageBody: string) => {};
 
   useEffect(() => {
     UserApi.getOnlineUsers()

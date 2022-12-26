@@ -2,8 +2,13 @@ import AuthPage from "./pages/AuthPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LobbyPage from "./pages/LobbyPage";
 import MainPage from "./pages/MainPage";
-import { createContext, useEffect, useState } from "react";
+import { FC, createContext, useEffect, useState } from "react";
 import FightPage from "./pages/FightPage";
+import MyButton from "./components/utility/MyButton";
+import { useRef } from "react";
+import Carousel, { CarouselItem } from "./components/fight/Carousel";
+import { Box } from "@chakra-ui/react";
+import { StompSessionProvider, useSubscription } from "react-stomp-hooks";
 
 interface IAuthContext {
   isAuth: boolean;
@@ -19,14 +24,25 @@ interface ILobbyContext {
   setLobbyId: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
+interface IWebSocketContext {
+  isTriggered: boolean;
+  setIsTriggered: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export const AuthContext = createContext({} as IAuthContext);
+
 export const LobbyContext = createContext({} as ILobbyContext);
 
-function App() {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+export const WebSocketContext = createContext({} as IWebSocketContext);
+
+const App: FC = () => {
+  const [isAuth, setIsAuth] = useState<boolean>(true);
   const [username, setUsername] = useState<string>();
   const [userId, setUserId] = useState<number>();
+
   const [lobbyId, setLobbyId] = useState<number>();
+
+  const [isTriggered, setIsTriggered] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage.getItem("isAuth")) {
@@ -37,40 +53,52 @@ function App() {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuth,
-        userId,
-        username,
-        setIsAuth,
-        setUserId,
-        setUsername,
-      }}
+    <StompSessionProvider
+      url={"http://localhost:5000/game"}
+      //All options supported by @stomp/stompjs can be used here
     >
-      <LobbyContext.Provider
+      <AuthContext.Provider
         value={{
-          lobbyId,
-          setLobbyId,
+          isAuth,
+          userId,
+          username,
+          setIsAuth,
+          setUserId,
+          setUsername,
         }}
       >
-        <BrowserRouter>
-          {isAuth !== false ? (
-            <Routes>
-              <Route path="/main" element={<MainPage />} />
-              <Route path="/lobby" element={<LobbyPage />} />
-              <Route path="/fight" element={<FightPage />} />
-              <Route path="*" element={<MainPage />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="*" element={<AuthPage />} />
-            </Routes>
-          )}
-        </BrowserRouter>
-      </LobbyContext.Provider>
-    </AuthContext.Provider>
+        <LobbyContext.Provider
+          value={{
+            lobbyId,
+            setLobbyId,
+          }}
+        >
+          <WebSocketContext.Provider
+            value={{
+              isTriggered,
+              setIsTriggered,
+            }}
+          >
+            <BrowserRouter>
+              {isAuth !== false ? (
+                <Routes>
+                  <Route path="/main" element={<MainPage />} />
+                  <Route path="/lobby" element={<LobbyPage />} />
+                  <Route path="/fight" element={<FightPage />} />
+                  <Route path="*" element={<MainPage />} />
+                </Routes>
+              ) : (
+                <Routes>
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route path="*" element={<AuthPage />} />
+                </Routes>
+              )}
+            </BrowserRouter>
+          </WebSocketContext.Provider>
+        </LobbyContext.Provider>
+      </AuthContext.Provider>
+    </StompSessionProvider>
   );
-}
+};
 
 export default App;
