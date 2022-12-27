@@ -4,6 +4,8 @@ import {
   Flex,
   HStack,
   Heading,
+  Stack,
+  Tooltip,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -192,23 +194,47 @@ const MainPage: FC = () => {
           onRefresh={handleRefreshEffects}
           defaultText="Effects not found"
         >
-          <HStack>
-            <Box w="40px" h="40px" color="#107896">
-              <GiBackstab />
-              {effectsList[currentEffectId]?.stamina}
-            </Box>
-            <Box w="40px" h="40px" color="#C02F1D">
-              <GiHighKick />
-              {effectsList[currentEffectId]?.strength}
-            </Box>
-            <Box w="40px" h="40px" color="orange.500">
-              <GiHolyGrail />
-              {effectsList[currentEffectId]?.luck}
-            </Box>
-            <Box w="40px" h="40px" color="green.400">
-              <GiLeg />
-              {effectsList[currentEffectId]?.constitution}
-            </Box>
+          <HStack spacing="5%">
+            <Tooltip hasArrow placement="top" label="Stamina">
+              <Stack color="#107896" justify="center" align="center">
+                <Box fontSize="100%">
+                  <GiBackstab />
+                </Box>
+                <Box fontSize="100%">
+                  {effectsList[currentEffectId]?.stamina}
+                </Box>
+              </Stack>
+            </Tooltip>
+            <Tooltip hasArrow placement="top" label="Strength">
+              <Stack color="#C02F1D" justify="center" align="center">
+                <Box fontSize="100%">
+                  <GiHighKick />
+                </Box>
+                <Box fontSize="100%">
+                  {effectsList[currentEffectId]?.strength}
+                </Box>
+              </Stack>
+            </Tooltip>
+            <Tooltip hasArrow placement="top" label="Luck">
+              <Stack color="orange.500" justify="center" align="center">
+                <Box fontSize="100%">
+                  <GiHolyGrail />
+                </Box>
+                <Box fontSize="100%">
+                  {effectsList[currentEffectId]?.luck}
+                </Box>
+              </Stack>
+            </Tooltip>
+            <Tooltip hasArrow placement="top" label="Constitution">
+              <Stack color="green.400" justify="center" align="center">
+                <Box fontSize="100%">
+                  <GiLeg />
+                </Box>
+                <Box fontSize="100%">
+                  {effectsList[currentEffectId]?.constitution}
+                </Box>
+              </Stack>
+            </Tooltip>
           </HStack>
         </EntityCard>
       );
