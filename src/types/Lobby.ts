@@ -14,3 +14,10 @@ export type LobbyStatusResponse = {
   lobbyId?: string;
   isOwner?: boolean;
 };
+
+export type LobbySetReadyRequest = {
+  commandType: "SET_READY";
+  characterId: number;
+  songId: number;
+  effectId: number;
+};

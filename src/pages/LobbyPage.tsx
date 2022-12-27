@@ -92,7 +92,15 @@ const LobbyPage: FC = () => {
         .then(onToggle)
         .catch((err) => console.log(err));
     } else {
-      LobbyApi.setReady({ lobbyId: lobbyId! })
+      LobbyApi.setReady(
+        { lobbyId: lobbyId! },
+        {
+          commandType: "SET_READY",
+          characterId: pickedCharacter?.id!,
+          songId: pickedSong?.id!,
+          effectId: pickedEffect?.id!,
+        }
+      )
         .then(onToggle)
         .catch((err) => console.log(err));
     }

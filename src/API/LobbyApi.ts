@@ -1,4 +1,8 @@
-import { LobbyRequest, LobbyStatusResponse } from "../types/Lobby";
+import {
+  LobbyRequest,
+  LobbySetReadyRequest,
+  LobbyStatusResponse,
+} from "../types/Lobby";
 import { api } from "./api";
 import { UserInLobby } from "../types/User";
 
@@ -36,10 +40,19 @@ export class LobbyApi {
     });
   };
 
-  static setReady = (request: LobbyRequest) => {
-    return api.post<void>("/lobby/ready/set", null, {
-      params: { lobbyId: request.lobbyId },
-    });
+  static setReady = (
+    lobbyRequest: LobbyRequest,
+    readyRequest: LobbySetReadyRequest
+  ) => {
+    return api.post<void>(
+      "/lobby/ready/set",
+      {
+        readyRequest: readyRequest,
+      },
+      {
+        params: { lobbyId: lobbyRequest.lobbyId },
+      }
+    );
   };
 
   static cancelReady = (request: LobbyRequest) => {
