@@ -29,10 +29,11 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({imgH, onPick, children})
 
   const handleRefresh = () => {
     CharacterApi.getAll()
-      .then((response) =>
+      .then((response) => {
         setCharactersList(
-          response.data.characters ? response.data.characters : []
+          response.data ? response.data : []
         )
+        console.log(charactersList)}
       )
       .catch((err) => console.log(err));
   };
@@ -59,14 +60,6 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({imgH, onPick, children})
     return (
       <Card maxW="md" rounded="md" shadow="md">
         <CardBody>
-          {currentCharacter !== undefined && (
-            <Image
-              h={imgH}
-              w="sm"
-              src={currentCharacter.imgSrc}
-              borderRadius="Dark lg"
-            />
-          )}
           <Stack mt="3" spacing="3">
             <Heading size="lg">{currentCharacter.name}</Heading>
             <Text color="blue.600" fontSize="2xl">

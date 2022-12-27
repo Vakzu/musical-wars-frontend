@@ -61,13 +61,13 @@ const MainPage: FC = () => {
   // );
 
   const handleBuyHero = () => {
-    HeroApi.buyHero({ heroId: currentHeroId });
+    HeroApi.buyHero({ heroId: heroesList[currentHeroId].id });
   };
 
   const handleBuyEffect = () => {
-    EffectApi.buyEffect({ effectId: currentEffectId });
+    EffectApi.buyEffect({ effectId: effectsList[currentEffectId].id });
   };
-
+  
   const handleNextHero = () => {
     if (currentHeroId + 1 === heroesList.length) {
       setCurrentHeroId(0);
@@ -226,8 +226,8 @@ const MainPage: FC = () => {
       })
       .catch((err) => console.log(err));
 
-    StatisticsApi.getStats()
-      .then((response) => setStatistics(response.data?.statistics))
+      StatisticsApi.getStats()
+      .then((response) => setStatistics(response.data))
       .catch((err) => console.log(err));
   }, []);
 

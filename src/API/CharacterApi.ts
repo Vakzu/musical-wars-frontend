@@ -1,8 +1,8 @@
-import { AllCharactersResponse } from "../types/Character";
+import Character from "../types/Character";
 import { api } from "./api";
 
 export class CharacterApi {
   static getAll = () => {
-    return api.get<AllCharactersResponse>("/character/all");
+    return api.get<Character[]>("/character/all");
   };
 }

@@ -25,7 +25,7 @@ export class LobbyApi {
   };
 
   static leaveLobby = (request: LobbyRequest) => {
-    return api.post<void>("/lobby/leave?lobbyId=" + request.lobbyId, null, {
+    return api.post<void>("/lobby/leave", null, {
       params: { lobbyId: request.lobbyId },
     });
   };
@@ -38,14 +38,15 @@ export class LobbyApi {
   };
 
   static setReady = (request: LobbyRequest) => {
-    return api.post<void>("/lobby/ready/set?lobbyId=" + request.lobbyId, null, {
+    return api.post<void>("/lobby/ready/set", null, {
       params: { lobbyId: request.lobbyId },
     });
   };
 
   static cancelReady = (request: LobbyRequest) => {
-    return api.post<void>("/lobby/ready/cancel?lobbyId=" + request.lobbyId, null
-    );
+    return api.post<void>("/lobby/ready/cancel", null, {
+      params: { lobbyId: request.lobbyId },
+    });
   };
 
   static getUsersInLobby = (request: LobbyRequest) => {
