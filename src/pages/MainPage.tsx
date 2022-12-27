@@ -130,7 +130,7 @@ const MainPage: FC = () => {
         if (response.data) {
           setLobbyId(response.data);
           localStorage.setItem("lobbyId", response.data);
-          
+
           navFunction("/lobby");
         }
       })
@@ -285,6 +285,19 @@ const MainPage: FC = () => {
   };
 
   useEffect(() => {
+    if (stompClient) {
+      const msg: MembersChangeMessage = {
+        type: "JOIN",
+        userId: userId!,
+        username: username!,
+      };
+
+      stompClient.publish({
+        destination: "/ws/online",
+        body: JSON.stringify(msg),
+      });
+    }
+
     handleRefreshHeroes();
     handleRefreshEffects();
     handleRefreshStatistics();

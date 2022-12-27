@@ -22,30 +22,15 @@ const AuthPage = () => {
 
   const { colorMode } = useColorMode();
 
-  const stompClient = useStompClient();
-
   const handleLogin = () => {
     AuthApi.login({ username: loginValue, password: passwordValue })
       .then((resp) => {
-        const msg: MembersChangeMessage = {
-          type: "JOIN",
-          userId: resp.data.userId,
-          username: resp.data.username,
-        };
-
         setIsAuth(true);
         setUsername(resp.data.username);
         setUserId(resp.data.userId);
         localStorage.setItem("isAuth", "true");
         localStorage.setItem("username", resp.data.username);
         localStorage.setItem("userId", resp.data.userId.toString());
-
-        if (stompClient) {
-          stompClient.publish({
-            destination: "ws/online",
-            body: String(msg),
-          });
-        }
       })
       .catch(() => setIsInvalidPassword(true));
   };

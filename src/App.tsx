@@ -44,44 +44,41 @@ const App: FC = () => {
   }, []);
 
   return (
-    <StompSessionProvider
-      url={"http://localhost:8080/game"}
-      //All options supported by @stomp/stompjs can be used here
-    >
-      <AuthContext.Provider
-        value={{
-          isAuth,
-          userId,
-          username,
-          setIsAuth,
-          setUserId,
-          setUsername,
-        }}
-      >
-        <LobbyContext.Provider
+    <BrowserRouter>
+      {isAuth !== false ? (
+        <StompSessionProvider url={"http://localhost:8080/game"}>
+          <LobbyContext.Provider
+            value={{
+              lobbyId,
+              setLobbyId,
+            }}
+          >
+            <Routes>
+              <Route path="/main" element={<MainPage />} />
+              <Route path="/lobby" element={<LobbyPage />} />
+              <Route path="/fight" element={<FightPage />} />
+              <Route path="*" element={<MainPage />} />
+            </Routes>
+          </LobbyContext.Provider>
+        </StompSessionProvider>
+      ) : (
+        <AuthContext.Provider
           value={{
-            lobbyId,
-            setLobbyId,
+            isAuth,
+            userId,
+            username,
+            setIsAuth,
+            setUserId,
+            setUsername,
           }}
         >
-            <BrowserRouter>
-              {isAuth !== false ? (
-                <Routes>
-                  <Route path="/main" element={<MainPage />} />
-                  <Route path="/lobby" element={<LobbyPage />} />
-                  <Route path="/fight" element={<FightPage />} />
-                  <Route path="*" element={<MainPage />} />
-                </Routes>
-              ) : (
-                <Routes>
-                  <Route path="/auth" element={<AuthPage />} />
-                  <Route path="*" element={<AuthPage />} />
-                </Routes>
-              )}
-            </BrowserRouter>
-        </LobbyContext.Provider>
-      </AuthContext.Provider>
-    </StompSessionProvider>
+          <Routes>
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="*" element={<AuthPage />} />
+          </Routes>
+        </AuthContext.Provider>
+      )}
+    </BrowserRouter>
   );
 };
 
