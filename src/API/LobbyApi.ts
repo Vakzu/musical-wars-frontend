@@ -1,11 +1,6 @@
-import {
-  LobbyCreateResponse,
-  LobbyRequest,
-  LobbyStatusResponse,
-  LobbyUsersResponse,
-} from "../types/Lobby";
+import { LobbyRequest, LobbyStatusResponse } from "../types/Lobby";
 import { api } from "./api";
-import { User, UserInLobby } from "../types/User";
+import { UserInLobby } from "../types/User";
 
 export class LobbyApi {
   static createLobby = () => {

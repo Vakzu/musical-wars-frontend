@@ -10,7 +10,6 @@ import {
   Stack,
   Heading,
   Text,
-  Image,
   Box,
 } from "@chakra-ui/react";
 import { CharacterApi } from "../../API/CharacterApi";

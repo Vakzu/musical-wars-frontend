@@ -12,7 +12,7 @@ import { AuthContext, LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
-import { InviteLobbyMessage, StartFightMessage } from "../types/WSMessage";
+import { InviteLobbyMessage } from "../types/WSMessage";
 import { User } from "../types/User";
 
 const LobbyPage: FC = () => {

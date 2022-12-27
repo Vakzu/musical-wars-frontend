@@ -4,7 +4,6 @@ import AuthPasswordField from "../components/auth/AuthPasswordField";
 import AuthLoginField from "../components/auth/AuthLoginField";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import { AuthApi } from "../API/AuthApi";
-import { useNavigate } from "react-router-dom";
 import AuthAlert from "../components/auth/AuthAlert";
 import { AuthContext } from "../App";
 import MyButton from "../components/utility/MyButton";
@@ -22,8 +21,6 @@ const AuthPage = () => {
   const [isPasswordsNotMatch, setIsPasswordsNotMatch] = React.useState(false);
 
   const { colorMode } = useColorMode();
-
-  const navFunction = useNavigate();
 
   const stompClient = useStompClient();
 

@@ -4,11 +4,7 @@ import LobbyPage from "./pages/LobbyPage";
 import MainPage from "./pages/MainPage";
 import { FC, createContext, useEffect, useState } from "react";
 import FightPage from "./pages/FightPage";
-import MyButton from "./components/utility/MyButton";
-import { useRef } from "react";
-import Carousel, { CarouselItem } from "./components/fight/Carousel";
-import { Box } from "@chakra-ui/react";
-import { StompSessionProvider, useSubscription } from "react-stomp-hooks";
+import { StompSessionProvider } from "react-stomp-hooks";
 
 interface IAuthContext {
   isAuth: boolean;

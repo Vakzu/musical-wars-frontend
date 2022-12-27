@@ -1,22 +1,9 @@
-import {
-  Box,
-  Center,
-  Flex,
-  Stat,
-  Text,
-  Image,
-  StatArrow,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { FC, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Carousel, { CarouselItem } from "../components/fight/Carousel";
 import MyButton from "../components/utility/MyButton";
-import { ArrowDownIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import FightAnimation from "../components/fight/FightAnimation";
-import { useSubscription } from "react-stomp-hooks";
 
 const items: CarouselItem[] = Array(20)
   .fill("")
@@ -39,8 +26,6 @@ const FightPage: FC = () => {
 
   const [selectedIndexFirst, setSelectedIndexFirst] = useState<number>(0);
   const [selectedIndexSecond, setSelectedIndexSecond] = useState<number>(0);
-
-  const renderFightMove = () => {};
 
   return (
     <Box className="fightPage">
