@@ -72,6 +72,7 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({
 
   useEffect(() => {
     handleSongsRefresh(currentCharacter?.id);
+    console.log(songsList)
   }, [currentCharacter]);
 
   if (charactersList.length !== 0) {

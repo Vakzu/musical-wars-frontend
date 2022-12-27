@@ -12,6 +12,7 @@ import { FC, useContext, useRef, useState } from "react";
 import { InviteLobbyMessage } from "../../types/WSMessage";
 import { useSubscription } from "react-stomp-hooks";
 import { AuthContext } from "../../App";
+import { on } from "process";
 
 interface InvitePopupProps {
   onAccept: (lobbyId: string) => void;
@@ -20,30 +21,32 @@ interface InvitePopupProps {
 const InvitePopup: FC<InvitePopupProps> = ({ onAccept }) => {
   const { userId } = useContext(AuthContext);
 
-  const [lobbyId, setLobbyId] = useState<string>();
-  const [senderName, setSenderName] = useState<string>();
+  const [inviteMessage, setInviteMessage] = useState<InviteLobbyMessage>();
 
   const { isOpen, onToggle } = useDisclosure();
 
   const cancelRef = useRef();
 
-  useSubscription("/ws/user/" + userId + "/queue/invites", (message) =>
+  useSubscription("/user/" + userId + "/queue/invites", (message) =>
     handleInvite(message.body)
   );
 
   //need to parse InviteLobbyMessage
   const handleInvite = (inviteBody: string) => {
     let obj: InviteLobbyMessage = JSON.parse(inviteBody);
+    setInviteMessage(obj)
+    if (!isOpen) onToggle()
 
-    if (obj.senderName !== undefined && obj.lobbyId !== undefined) {
-      setSenderName(obj.senderName);
-      setLobbyId(obj.lobbyId);
-    }
+
+    // if (obj.senderName !== undefined && obj.lobbyId !== undefined) {
+    //   setSenderName(obj.senderName);
+    //   setLobbyId(obj.lobbyId);
+    // }
   };
 
   const handleAccept = () => {
     onToggle();
-    onAccept(lobbyId!);
+    onAccept(inviteMessage?.lobbyId!);
   };
 
   return (
@@ -56,7 +59,7 @@ const InvitePopup: FC<InvitePopupProps> = ({ onAccept }) => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              New invite from {senderName}
+              New invite from {inviteMessage?.senderName}
             </AlertDialogHeader>
 
             <AlertDialogFooter>

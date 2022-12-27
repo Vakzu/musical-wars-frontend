@@ -43,17 +43,17 @@ const LobbyPage: FC = () => {
 
   const stompClient = useStompClient();
 
-  useSubscription("/ws/topic/online", (message) =>
+  useSubscription("/topic/online", (message) =>
     handleChangeOnline(message.body)
   );
 
-  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
+  useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
     handleChangeLobbyMembers(message.body)
   );
-  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeReady", (message) =>
+  useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
     handleChangeReadyState(message.body)
   );
-  useSubscription("/ws/topic/lobby/" + lobbyId + "/startFight", (message) =>
+  useSubscription("/topic/lobby/" + lobbyId + "/startFight", (message) =>
     handleStartFight(message.body)
   );
 
@@ -90,16 +90,9 @@ const LobbyPage: FC = () => {
     let obj: ReadyStateChangeMessage = JSON.parse(changeReadyStateBody);
     console.log(obj);
 
-    const found = lobbyUsers.find(
-      (userInLobby) => userInLobby.id === obj.userId
-    );
-    if (found) {
-      found.isReady = obj.type === "SET_READY";
-    }
-
-    setLobbyUsers(lobbyUsers);
+    handleRefreshLobby();
   };
-
+  
   //need to parse StartFightMessage
   const handleStartFight = (startFightMessageBody: string) => {
     let obj: ReadyStateChangeMessage = JSON.parse(startFightMessageBody);

@@ -8,6 +8,8 @@ export class CharacterApi {
   };
 
   static getSongs = (characterId: number) => {
-    return api.get<Song[]>("/character/songs");
+    return api.get<Song[]>("/character/songs", {
+      params: { characterId },
+    });
   };
 }

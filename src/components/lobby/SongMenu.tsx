@@ -24,7 +24,7 @@ const SongMenu: FC<SongMenuProps> = ({ songList, onClick }) => {
     onClick(song);
   };
 
-  return currentSong ? (
+  return songList ? (
     <Menu>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
         Songs
@@ -33,7 +33,7 @@ const SongMenu: FC<SongMenuProps> = ({ songList, onClick }) => {
         {songList?.map((song) => (
           <MenuItem key={song.id} onClick={() => handleClick(song)}>
             <HStack>
-              {currentSong.id === song.id && <CheckCircleIcon />}
+              {currentSong?.id === song.id && <CheckCircleIcon />}
               <Box>{song.name}</Box>
               <Box>{song.damage}</Box>
             </HStack>

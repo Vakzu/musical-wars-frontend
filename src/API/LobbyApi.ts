@@ -32,7 +32,8 @@ export class LobbyApi {
   // Fight start
   static startLobby = (request: LobbyRequest) => {
     return api.post<void>("/lobby/start", null, {
-      params: { lobbyId: request.lobbyId },
+      params: { lobbyId: request.lobbyId,
+                locationId: 1 },
     });
   };
 
@@ -42,9 +43,7 @@ export class LobbyApi {
   ) => {
     return api.post<void>(
       "/lobby/ready/set",
-      {
-        readyRequest: readyRequest,
-      },
+      readyRequest,
       {
         params: { lobbyId: lobbyRequest.lobbyId },
       }
