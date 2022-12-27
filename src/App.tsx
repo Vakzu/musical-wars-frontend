@@ -46,6 +46,10 @@ const App: FC = () => {
       setUsername(localStorage.getItem("username")!);
       setUserId(Number(localStorage.getItem("userId")));
     }
+
+    if (localStorage.getItem("lobbyId")) {
+      setLobbyId(localStorage.getItem("lobbyId")!);
+    }
   }, []);
 
   return (
