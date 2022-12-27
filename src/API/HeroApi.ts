@@ -3,7 +3,7 @@ import { api } from "./api";
 
 export class HeroApi {
   static getAll = () => {
-    return api.get<AllHeroesResponse>("/hero/all", {withCredentials: true});
+    return api.get<AllHeroesResponse>("/hero/all", { withCredentials: true });
   };
 
   static buyHero = (request: BuyHeroRequest) => {

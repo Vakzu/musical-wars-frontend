@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { InviteLobbyMessage, StartFightMessage } from "../types/WSMessage";
-import {User} from "../types/User";
+import { User } from "../types/User";
 
 const LobbyPage: FC = () => {
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
@@ -88,7 +88,10 @@ const LobbyPage: FC = () => {
 
   useEffect(() => {
     UserApi.getOnlineUsers()
-      .then((response) => { setOnlineUsers(response.data); console.log(onlineUsers) })
+      .then((response) => {
+        setOnlineUsers(response.data);
+        console.log(onlineUsers);
+      })
       .catch((err) => console.log(err));
 
     LobbyApi.getUsersInLobby({ lobbyId: lobbyId! })

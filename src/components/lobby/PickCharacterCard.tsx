@@ -22,7 +22,11 @@ interface PickCharacterCardProps {
   children?: ReactNode;
 }
 
-const PickCharacterCard: FC<PickCharacterCardProps> = ({imgH, onPick, children}) => {
+const PickCharacterCard: FC<PickCharacterCardProps> = ({
+  imgH,
+  onPick,
+  children,
+}) => {
   const [charactersList, setCharactersList] = useState<Character[]>([]);
 
   const [currentCharacterId, setCurrentCharacterId] = useState<number>(0);
@@ -30,11 +34,9 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({imgH, onPick, children})
   const handleRefresh = () => {
     CharacterApi.getAll()
       .then((response) => {
-        setCharactersList(
-          response.data ? response.data : []
-        )
-        console.log(charactersList)}
-      )
+        setCharactersList(response.data ? response.data : []);
+        console.log(charactersList);
+      })
       .catch((err) => console.log(err));
   };
 

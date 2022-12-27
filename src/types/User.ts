@@ -1,10 +1,10 @@
 export interface User {
-  id: number,
-  name: string
+  id: number;
+  name: string;
 }
 
 export interface UserInLobby extends User {
-  isReady: boolean
+  isReady: boolean;
 }
 
 export interface UserBalanceResponse {

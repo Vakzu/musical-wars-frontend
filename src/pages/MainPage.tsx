@@ -67,7 +67,7 @@ const MainPage: FC = () => {
   const handleBuyEffect = () => {
     EffectApi.buyEffect({ effectId: effectsList[currentEffectId].id });
   };
-  
+
   const handleNextHero = () => {
     if (currentHeroId + 1 === heroesList.length) {
       setCurrentHeroId(0);
@@ -151,7 +151,9 @@ const MainPage: FC = () => {
       return (
         <EntityCard
           entity={heroesList[currentHeroId]}
-          imgSrc={"http://localhost:8080/images/" + heroesList[currentHeroId]?.imgSrc}
+          imgSrc={
+            "http://localhost:8080/images/" + heroesList[currentHeroId]?.imgSrc
+          }
           imgH="18em"
           onBuy={handleBuyHero}
           onNext={handleNextHero}
@@ -235,7 +237,7 @@ const MainPage: FC = () => {
       })
       .catch((err) => console.log(err));
 
-      StatisticsApi.getStats()
+    StatisticsApi.getStats()
       .then((response) => setStatistics(response.data))
       .catch((err) => console.log(err));
   }, []);

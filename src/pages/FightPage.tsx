@@ -40,9 +40,7 @@ const FightPage: FC = () => {
   const [selectedIndexFirst, setSelectedIndexFirst] = useState<number>(0);
   const [selectedIndexSecond, setSelectedIndexSecond] = useState<number>(0);
 
-  const renderFightMove = () => {
-
-  }
+  const renderFightMove = () => {};
 
   return (
     <Box className="fightPage">

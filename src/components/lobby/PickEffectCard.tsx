@@ -21,7 +21,7 @@ interface PickEffectCardProps {
   children?: ReactNode;
 }
 
-const PickEffectCard: FC<PickEffectCardProps> = ({onPick, children}) => {
+const PickEffectCard: FC<PickEffectCardProps> = ({ onPick, children }) => {
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
 
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);

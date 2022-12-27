@@ -19,9 +19,13 @@ export class LobbyApi {
   };
 
   static getLobbyStatus = (request: LobbyRequest) => {
-    return api.post<LobbyStatusResponse>("/lobby/status?lobbyId=" + request.lobbyId, null, {
-      params: { lobbyId: request.lobbyId },
-    });
+    return api.post<LobbyStatusResponse>(
+      "/lobby/status?lobbyId=" + request.lobbyId,
+      null,
+      {
+        params: { lobbyId: request.lobbyId },
+      }
+    );
   };
 
   static leaveLobby = (request: LobbyRequest) => {
@@ -51,7 +55,7 @@ export class LobbyApi {
 
   static getUsersInLobby = (request: LobbyRequest) => {
     return api.get<UserInLobby[]>("/lobby/users", {
-      params: { lobbyId: request.lobbyId }
+      params: { lobbyId: request.lobbyId },
     });
   };
 }

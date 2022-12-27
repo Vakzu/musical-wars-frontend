@@ -14,12 +14,9 @@ export class AuthApi {
   };
 
   static register = (user: RegisterRequest) => {
-    return api.post<AuthResponse>(
-      "/register",
-      {
-        username: user.username,
-        password: user.password,
-      }
-    );
+    return api.post<AuthResponse>("/register", {
+      username: user.username,
+      password: user.password,
+    });
   };
 }

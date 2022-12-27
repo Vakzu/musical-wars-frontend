@@ -97,7 +97,7 @@ const App: FC = () => {
           </WebSocketContext.Provider>
         </LobbyContext.Provider>
       </AuthContext.Provider>
-     </StompSessionProvider>
+    </StompSessionProvider>
   );
 };
 
