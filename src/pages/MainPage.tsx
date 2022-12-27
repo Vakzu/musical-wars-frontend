@@ -27,14 +27,15 @@ import { StatsButton } from "../components/main/StatsButton";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { ExitButton } from "../components/main/ExitButton";
-import { useStompClient, useSubscription } from "react-stomp-hooks";
-import { InviteLobbyMessage, MembersChangeMessage } from "../types/WSMessage";
+import { useStompClient } from "react-stomp-hooks";
+import { MembersChangeMessage } from "../types/WSMessage";
 import UserBalance from "../components/main/UserBalance";
 import { UserApi } from "../API/UserApi";
+import InvitePopup from "../components/main/InvitePopup";
 
 const MainPage: FC = () => {
   const { userId, username, setIsAuth } = useContext(AuthContext);
-  const { lobbyId, setLobbyId } = useContext(LobbyContext);
+  const { setLobbyId } = useContext(LobbyContext);
 
   const [heroesList, setHeroesList] = useState<Hero[]>([]);
   const [effectsList, setEffectsList] = useState<Effect[]>([]);
@@ -42,29 +43,14 @@ const MainPage: FC = () => {
   const [currentHeroId, setCurrentHeroId] = useState<number>(0);
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
 
-  const { isOpen, onToggle } = useDisclosure();
-
   const [statistics, setStatistics] = useState<Statistics | undefined>();
   const [balance, setBalance] = useState<number | undefined>();
+
+  const { isOpen, onToggle } = useDisclosure();
 
   const navFunction = useNavigate();
 
   const stompClient = useStompClient();
-
-  useSubscription("/ws/topic/online", (message) =>
-    handleChangeOnline(message.body)
-  );
-
-  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
-    handleChangeLobbyMembers(message.body)
-  );
-  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeReady", (message) =>
-    handleChangeReadyState(message.body)
-  );
-
-  useSubscription("/ws/user/" + userId + "/queue/invites", (message) =>
-    handleInvite(message.body)
-  );
 
   const handleBuyHero = () => {
     HeroApi.buyHero({ heroId: heroesList[currentHeroId].id })
@@ -137,6 +123,17 @@ const MainPage: FC = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleConnect = (lobbyId: string) => {
+    LobbyApi.joinLobby({ lobbyId })
+      .then(() => {
+        setLobbyId(lobbyId);
+        localStorage.setItem("lobbyId", lobbyId);
+
+        navFunction("/lobby");
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleExit = () => {
     const msg: MembersChangeMessage = {
       type: "LEAVE",
@@ -153,27 +150,6 @@ const MainPage: FC = () => {
         body: String(msg),
       });
     }
-  };
-
-  //need to parse MembersChangeMessage
-  const handleChangeOnline = (onlineMessageBody: string) => {
-    console.log(onlineMessageBody);
-  };
-
-  //need to parse MembersChangeMessage
-  const handleChangeLobbyMembers = (lobbyMembersChangeBody: string) => {
-    console.log(lobbyMembersChangeBody);
-  };
-
-  //need to parse ReadyStateChangeMessage
-  const handleChangeReadyState = (changeReadyStateBody: string) => {
-    console.log(changeReadyStateBody);
-  };
-
-  //need to parse InviteLobbyMessage
-  const handleInvite = (inviteBody: string) => {
-    let obj: InviteLobbyMessage = JSON.parse(inviteBody);
-    console.log(obj);
   };
 
   const renderHeroCard = (): ReactNode => {
@@ -311,6 +287,7 @@ const MainPage: FC = () => {
         <Heading p="3%">Hello, {username ? username : "somebody"}</Heading>
       </Flex>
       <HStack position="absolute" top="5" right="5" spacing="5">
+        <InvitePopup onAccept={handleConnect} />
         <UserBalance balance={balance} />
         <ExitButton aria-label="switch" onClick={handleExit} />
         <StatsButton aria-label="switch" onClick={onToggle} />
