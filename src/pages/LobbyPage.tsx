@@ -14,11 +14,18 @@ import MyButton from "../components/utility/MyButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { InviteLobbyMessage } from "../types/WSMessage";
 import { User } from "../types/User";
+import Character from "../types/Character";
+import Effect from "../types/Effect";
+import Song from "../types/Song";
 
 const LobbyPage: FC = () => {
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
 
   const [lobbyUsers, setLobbyUsers] = useState<User[]>([]);
+
+  const [pickedCharacter, setPickedCharacter] = useState<Character>();
+  const [pickedSong, setPickedSong] = useState<Song>();
+  const [pickedEffect, setPickedEffect] = useState<Effect>();
 
   const { isOpen, onToggle } = useDisclosure();
 
@@ -34,9 +41,17 @@ const LobbyPage: FC = () => {
     handleStartFight(message.body)
   );
 
-  const handlePickCharacter = () => {};
+  const handlePickCharacter = (pickedCharacter: Character) => {
+    setPickedCharacter(pickedCharacter);
+  };
 
-  const handlePickEffect = () => {};
+  const handlePickEffect = (pickedEffect: Effect) => {
+    setPickedEffect(pickedEffect);
+  };
+
+  const handlePickSong = (pickedSong: Song) => {
+    setPickedSong(pickedSong);
+  };
 
   const inviteUser = (recepientId: number) => {
     const msg: InviteLobbyMessage = {
@@ -138,7 +153,10 @@ const LobbyPage: FC = () => {
 
           <VStack align="center" justify="center" w="40%" spacing="4%">
             <Box w="100%">
-              <PickCharacterCard imgH="12em" onPick={handlePickCharacter} />
+              <PickCharacterCard
+                onPickCharacter={handlePickCharacter}
+                onPickSong={handlePickSong}
+              />
             </Box>
             <Box w="100%">
               <PickEffectCard onPick={handlePickEffect} />

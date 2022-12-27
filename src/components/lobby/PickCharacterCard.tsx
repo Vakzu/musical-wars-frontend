@@ -14,36 +14,49 @@ import {
 } from "@chakra-ui/react";
 import { CharacterApi } from "../../API/CharacterApi";
 import { FaHeartbeat } from "react-icons/fa";
+import Song from "../../types/Song";
+import SongMenu from "./SongMenu";
 
 interface PickCharacterCardProps {
-  imgH?: string;
-  onPick?: (c: Character) => void;
-  children?: ReactNode;
+  onPickCharacter: (c: Character) => void;
+  onPickSong: (s: Song) => void;
 }
 
 const PickCharacterCard: FC<PickCharacterCardProps> = ({
-  imgH,
-  onPick,
-  children,
+  onPickCharacter,
+  onPickSong,
 }) => {
   const [charactersList, setCharactersList] = useState<Character[]>([]);
 
+  const [songsList, setSongsList] = useState<Song[]>([]);
+
   const [currentCharacterId, setCurrentCharacterId] = useState<number>(0);
 
-  const handleRefresh = () => {
+  const handleCharactersRefresh = () => {
     CharacterApi.getAll()
       .then((response) => {
         setCharactersList(response.data ? response.data : []);
-        console.log(charactersList);
       })
       .catch((err) => console.log(err));
   };
 
-  const handlePick = () => {
-    if (onPick !== undefined) onPick(currentCharacter);
+  const handleSongsRefresh = (characterId: number) => {
+    CharacterApi.getSongs(characterId)
+      .then((response) => {
+        setSongsList(response.data);
+      })
+      .catch((err) => console.log(err));
   };
 
-  const handleNext = () => {
+  const handlePickCharacter = () => {
+    onPickCharacter(currentCharacter);
+  };
+
+  const handlePickSong = (song: Song) => {
+    onPickSong(song);
+  };
+
+  const handleNextCharacter = () => {
     if (currentCharacterId + 1 === charactersList.length) {
       setCurrentCharacterId(0);
     } else {
@@ -54,8 +67,12 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({
   const currentCharacter = charactersList[currentCharacterId];
 
   useEffect(() => {
-    handleRefresh();
+    handleCharactersRefresh();
   }, []);
+
+  useEffect(() => {
+    handleSongsRefresh(currentCharacter?.id);
+  }, [currentCharacter]);
 
   if (charactersList.length !== 0) {
     return (
@@ -74,12 +91,24 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2">
-            <Button variant="solid" colorScheme="blue" onClick={handlePick}>
+            <Button
+              variant="solid"
+              colorScheme="blue"
+              onClick={handlePickCharacter}
+            >
               Pick
             </Button>
-            <Button variant="ghost" colorScheme="blue" onClick={handleNext}>
+            <Button
+              variant="ghost"
+              colorScheme="blue"
+              onClick={handleNextCharacter}
+            >
               Next
             </Button>
+            <SongMenu
+              songList={songsList}
+              onClick={(song: Song) => handlePickSong(song)}
+            />
           </ButtonGroup>
         </CardFooter>
       </Card>
@@ -95,7 +124,11 @@ const PickCharacterCard: FC<PickCharacterCardProps> = ({
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2">
-            <Button variant="solid" colorScheme="blue" onClick={handleRefresh}>
+            <Button
+              variant="solid"
+              colorScheme="blue"
+              onClick={handleCharactersRefresh}
+            >
               Refresh
             </Button>
           </ButtonGroup>
