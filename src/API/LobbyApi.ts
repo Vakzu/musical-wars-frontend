@@ -1,7 +1,6 @@
 import {
   LobbyRequest,
   LobbySetReadyRequest,
-  LobbyStatusResponse,
 } from "../types/Lobby";
 import { api } from "./api";
 import { UserInLobby } from "../types/User";
@@ -12,19 +11,16 @@ export class LobbyApi {
   };
 
   static joinLobby = (request: LobbyRequest) => {
-    return api.post<void>("/lobby/join?lobbyId=" + request.lobbyId, null, {
+    return api.post<void>("/lobby/join", null, {
       params: { lobbyId: request.lobbyId },
     });
   };
 
+  //returns host userId
   static getLobbyStatus = (request: LobbyRequest) => {
-    return api.post<LobbyStatusResponse>(
-      "/lobby/status?lobbyId=" + request.lobbyId,
-      null,
-      {
-        params: { lobbyId: request.lobbyId },
-      }
-    );
+    return api.post<number>("/lobby/status", null, {
+      params: { lobbyId: request.lobbyId },
+    });
   };
 
   static leaveLobby = (request: LobbyRequest) => {
@@ -35,7 +31,7 @@ export class LobbyApi {
 
   // Fight start
   static startLobby = (request: LobbyRequest) => {
-    return api.post<void>("/lobby/start?lobbyId=" + request.lobbyId, null, {
+    return api.post<void>("/lobby/start", null, {
       params: { lobbyId: request.lobbyId },
     });
   };

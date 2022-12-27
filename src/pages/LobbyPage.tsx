@@ -1,4 +1,4 @@
-import { Box, Flex, VStack, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { FC, useContext, useEffect, useState } from "react";
 import LobbySection from "../components/lobby/LobbySection";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
@@ -12,16 +12,22 @@ import { AuthContext, LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
-import { InviteLobbyMessage } from "../types/WSMessage";
-import { User } from "../types/User";
+import {
+  InviteLobbyMessage,
+  MembersChangeMessage,
+  ReadyStateChangeMessage,
+} from "../types/WSMessage";
+import { User, UserInLobby } from "../types/User";
 import Character from "../types/Character";
 import Effect from "../types/Effect";
 import Song from "../types/Song";
+import { HiStatusOffline, HiStatusOnline } from "react-icons/hi";
+import { CheckCircleIcon, ViewIcon } from "@chakra-ui/icons";
 
 const LobbyPage: FC = () => {
   const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
 
-  const [lobbyUsers, setLobbyUsers] = useState<User[]>([]);
+  const [lobbyUsers, setLobbyUsers] = useState<UserInLobby[]>([]);
 
   const [pickedCharacter, setPickedCharacter] = useState<Character>();
   const [pickedSong, setPickedSong] = useState<Song>();
@@ -29,7 +35,7 @@ const LobbyPage: FC = () => {
 
   const { isOpen, onToggle } = useDisclosure();
 
-  const { username } = useContext(AuthContext);
+  const { username, userId } = useContext(AuthContext);
 
   const { lobbyId } = useContext(LobbyContext);
 
@@ -37,6 +43,16 @@ const LobbyPage: FC = () => {
 
   const stompClient = useStompClient();
 
+  useSubscription("/ws/topic/online", (message) =>
+    handleChangeOnline(message.body)
+  );
+
+  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
+    handleChangeLobbyMembers(message.body)
+  );
+  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeReady", (message) =>
+    handleChangeReadyState(message.body)
+  );
   useSubscription("/ws/topic/lobby/" + lobbyId + "/startFight", (message) =>
     handleStartFight(message.body)
   );
@@ -51,6 +67,43 @@ const LobbyPage: FC = () => {
 
   const handlePickSong = (pickedSong: Song) => {
     setPickedSong(pickedSong);
+  };
+
+  //need to parse MembersChangeMessage
+  const handleChangeOnline = (onlineMessageBody: string) => {
+    let obj: MembersChangeMessage = JSON.parse(onlineMessageBody);
+    console.log(obj);
+
+    handleRefreshOnline();
+  };
+
+  //need to parse MembersChangeMessage
+  const handleChangeLobbyMembers = (lobbyMembersChangeBody: string) => {
+    let obj: MembersChangeMessage = JSON.parse(lobbyMembersChangeBody);
+    console.log(obj);
+
+    handleRefreshLobby();
+  };
+
+  //need to parse ReadyStateChangeMessage
+  const handleChangeReadyState = (changeReadyStateBody: string) => {
+    let obj: ReadyStateChangeMessage = JSON.parse(changeReadyStateBody);
+    console.log(obj);
+
+    const found = lobbyUsers.find(
+      (userInLobby) => userInLobby.id === obj.userId
+    );
+    if (found) {
+      found.isReady = obj.type === "SET_READY";
+    }
+
+    setLobbyUsers(lobbyUsers);
+  };
+
+  //need to parse StartFightMessage
+  const handleStartFight = (startFightMessageBody: string) => {
+    let obj: ReadyStateChangeMessage = JSON.parse(startFightMessageBody);
+    console.log(obj);
   };
 
   const inviteUser = (recepientId: number) => {
@@ -79,11 +132,15 @@ const LobbyPage: FC = () => {
   };
 
   const handleStart = () => {
-    if (isOpen) {
-      LobbyApi.startLobby({ lobbyId: lobbyId! })
-        .then(() => navFunction("/fight"))
-        .catch((err) => console.log(err));
-    }
+    LobbyApi.startLobby({ lobbyId: lobbyId! }).then((response) => {
+      if (response.data == userId) {
+        if (isOpen) {
+          LobbyApi.startLobby({ lobbyId: lobbyId! })
+            .then(() => navFunction("/fight"))
+            .catch((err) => console.log(err));
+        }
+      }
+    });
   };
 
   const handleReady = () => {
@@ -106,20 +163,24 @@ const LobbyPage: FC = () => {
     }
   };
 
-  //need to parse StartFightMessage
-  const handleStartFight = (startFightMessageBody: string) => {};
-
-  useEffect(() => {
+  const handleRefreshOnline = () => {
     UserApi.getOnlineUsers()
       .then((response) => {
         setOnlineUsers(response.data);
         console.log(onlineUsers);
       })
       .catch((err) => console.log(err));
+  };
 
+  const handleRefreshLobby = () => {
     LobbyApi.getUsersInLobby({ lobbyId: lobbyId! })
       .then((response) => setLobbyUsers(response.data))
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    handleRefreshOnline();
+    handleRefreshLobby();
   }, []);
 
   return (
@@ -151,6 +212,13 @@ const LobbyPage: FC = () => {
                 <VStack align="left">
                   {lobbyUsers?.map((user) => (
                     <Box key={user.id}>
+                      <HStack>
+                        {user.isReady ? (
+                          <HiStatusOnline />
+                        ) : (
+                          <HiStatusOffline />
+                        )}
+                      </HStack>
                       <PersonName name={user.name} />
                     </Box>
                   ))}
@@ -188,9 +256,5 @@ const LobbyPage: FC = () => {
     </Box>
   );
 };
-/*
-1) Приглашение не может потом поменятся на не приглашен
-2) Добавить в сокет хендлер который сигнализиирует о том что человека пригласили, он вошел
-*/
 
 export default LobbyPage;
