@@ -94,7 +94,7 @@ const LobbyPage: FC = () => {
     handleRefreshLobby();
   };
 
-  const {setTurns} = useContext(FightMovesContext);
+  const { setTurns } = useContext(FightMovesContext);
 
   //need to parse StartFightMessage
   const handleStartFight = (startFightMessageBody: string) => {
@@ -147,17 +147,19 @@ const LobbyPage: FC = () => {
         .then(onToggle)
         .catch((err) => console.log(err));
     } else {
-      LobbyApi.setReady(
-        { lobbyId: lobbyId! },
-        {
-          commandType: "SET_READY",
-          characterId: pickedCharacter?.id!,
-          songId: pickedSong?.id!,
-          effectId: pickedEffect?.id!,
-        }
-      )
-        .then(onToggle)
-        .catch((err) => console.log(err));
+      if (pickedCharacter !== undefined && pickedSong !== undefined) {
+        LobbyApi.setReady(
+          { lobbyId: lobbyId! },
+          {
+            commandType: "SET_READY",
+            characterId: pickedCharacter?.id!,
+            songId: pickedSong?.id!,
+            effectId: pickedEffect?.id!,
+          }
+        )
+          .then(onToggle)
+          .catch((err) => console.log(err));
+      }
     }
   };
 
