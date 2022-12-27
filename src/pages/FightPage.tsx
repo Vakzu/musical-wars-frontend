@@ -1,8 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { FC, useState } from "react";
+import { Box, Flex, VStack, useDisclosure } from "@chakra-ui/react";
+import { FC, useEffect, useState } from "react";
 import { DarkModeSwitch } from "../components/utility/DarkModeSwitch";
 import Carousel, { CarouselItem } from "../components/fight/Carousel";
-import MyButton from "../components/utility/MyButton";
 import FightAnimation from "../components/fight/FightAnimation";
 import { FightMovesContext } from "../App";
 import { useContext } from "react";
@@ -21,13 +20,19 @@ const items: CarouselItem[] = Array(20)
   }));
 
 const FightPage: FC = () => {
+  const { turns } = useContext(FightMovesContext);
+  const [info, setInfo] = useState<string>("");
 
-  const {turns} = useContext(FightMovesContext)
+  const { isOpen, onToggle } = useDisclosure();
 
   const handleClick = () => {
     setSelectedIndexFirst(selectedIndexFirst + 1);
     setSelectedIndexSecond(selectedIndexSecond - 1);
   };
+
+  useEffect(() => {
+    handleClick()
+  }, []);
 
   const [selectedIndexFirst, setSelectedIndexFirst] = useState<number>(0);
   const [selectedIndexSecond, setSelectedIndexSecond] = useState<number>(0);
@@ -56,7 +61,14 @@ const FightPage: FC = () => {
           />
         </Box>
         <Box w="20%">
+          <VStack>
           <FightAnimation />
+          {turns.map((turn) => (
+            <Box>
+              User {turn.attackerId} damaged {turn.victimId} on {turn.damage}
+            </Box>
+          ))}
+          </VStack>
         </Box>
         <Box w="40%">
           <Carousel
@@ -67,7 +79,7 @@ const FightPage: FC = () => {
           />
         </Box>
       </Flex>
-      <MyButton onPushButton={handleClick} />
+      {/* <MyButton onPushButton={handleClick} /> */}
     </Box>
   );
 };
