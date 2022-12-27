@@ -8,10 +8,11 @@ import PickCharacterCard from "../components/lobby/PickCharacterCard";
 import PickEffectCard from "../components/lobby/PickEffectCard";
 import { UserApi } from "../API/UserApi";
 import { LobbyApi } from "../API/LobbyApi";
-import { AuthContext, LobbyContext } from "../App";
+import { AuthContext, FightMovesContext, LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
+import { FightTurn } from "../types/Fight";
 import {
   InviteLobbyMessage,
   MembersChangeMessage,
@@ -92,11 +93,15 @@ const LobbyPage: FC = () => {
 
     handleRefreshLobby();
   };
-  
+
+  const {setTurns} = useContext(FightMovesContext);
+
   //need to parse StartFightMessage
   const handleStartFight = (startFightMessageBody: string) => {
-    let obj: ReadyStateChangeMessage = JSON.parse(startFightMessageBody);
+    let obj: FightTurn[] = JSON.parse(startFightMessageBody);
     console.log(obj);
+    setTurns(obj);
+    navFunction("/fight");
   };
 
   const inviteUser = (recepientId: number) => {
