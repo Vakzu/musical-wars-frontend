@@ -11,13 +11,14 @@ import { LobbyApi } from "../API/LobbyApi";
 import { AuthContext, LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
-import { useStompClient, useSubscription } from "react-stomp-hooks";
+// import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { InviteLobbyMessage, StartFightMessage } from "../types/WSMessage";
+import {User} from "../types/User";
 
 const LobbyPage: FC = () => {
-  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const [onlineUsers, setOnlineUsers] = useState<User[]>([]);
 
-  const [lobbyUsers, setLobbyUsers] = useState<string[]>([]);
+  const [lobbyUsers, setLobbyUsers] = useState<User[]>([]);
 
   const { isOpen, onToggle } = useDisclosure();
 
@@ -27,7 +28,7 @@ const LobbyPage: FC = () => {
 
   const navFunction = useNavigate();
 
-  const stompClient = useStompClient();
+  // const stompClient = useStompClient();
 
   // useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
   //   handleStartFight(message.body)
@@ -44,12 +45,12 @@ const LobbyPage: FC = () => {
       lobbyId: lobbyId!,
     };
 
-    if (stompClient) {
-      stompClient.publish({
-        destination: "/game/invite",
-        body: String(msg),
-      });
-    }
+    // if (stompClient) {
+    //   stompClient.publish({
+    //     destination: "/game/invite",
+    //     body: String(msg),
+    //   });
+    // }
   };
 
   const handleLeave = () => {
@@ -87,11 +88,11 @@ const LobbyPage: FC = () => {
 
   useEffect(() => {
     UserApi.getOnlineUsers()
-      .then((response) => setOnlineUsers(response.data.userNames))
+      .then((response) => { setOnlineUsers(response.data); console.log(onlineUsers) })
       .catch((err) => console.log(err));
 
-    LobbyApi.getUsersInLobby()
-      .then((response) => setLobbyUsers(response.data.userNames))
+    LobbyApi.getUsersInLobby({ lobbyId: lobbyId! })
+      .then((response) => setLobbyUsers(response.data))
       .catch((err) => console.log(err));
   }, []);
 
@@ -110,9 +111,9 @@ const LobbyPage: FC = () => {
               <LobbySection sectionName="ONLINE">
                 <VStack align="left">
                   {onlineUsers?.map((user) => (
-                    <Box key={user}>
-                      <InviteCheckbox onClick={() => inviteUser(user)}>
-                        <PersonName name={user} />
+                    <Box key={user.id}>
+                      <InviteCheckbox onClick={() => inviteUser(user.name)}>
+                        <PersonName name={user.name} />
                       </InviteCheckbox>
                     </Box>
                   ))}
@@ -123,8 +124,8 @@ const LobbyPage: FC = () => {
               <LobbySection sectionName="LOBBY">
                 <VStack align="left">
                   {lobbyUsers?.map((user) => (
-                    <Box key={user}>
-                      <PersonName name={user} />
+                    <Box key={user.id}>
+                      <PersonName name={user.name} />
                     </Box>
                   ))}
                 </VStack>

@@ -1,9 +1,9 @@
 export type LobbyCreateResponse = {
-  lobbyId: number;
+  lobbyId: string;
 };
 
 export type LobbyRequest = {
-  lobbyId: number;
+  lobbyId: string;
 };
 
 export type LobbyUsersResponse = {
@@ -11,6 +11,6 @@ export type LobbyUsersResponse = {
 };
 
 export type LobbyStatusResponse = {
-  lobbyId?: number;
+  lobbyId?: string;
   isOwner?: boolean;
 };

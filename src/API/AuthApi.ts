@@ -19,8 +19,7 @@ export class AuthApi {
       {
         username: user.username,
         password: user.password,
-      },
-      { withCredentials: true }
+      }
     );
   };
 }

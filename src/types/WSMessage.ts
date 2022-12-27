@@ -18,5 +18,5 @@ export type StartFightMessage = {
 export type InviteLobbyMessage = {
   senderName: string;
   recepientName: string;
-  lobbyId: number;
+  lobbyId: string;
 };

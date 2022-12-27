@@ -1,4 +1,4 @@
-import { UserBalanceResponse, UserOnlineResponse } from "../types/User";
+import { User, UserBalanceResponse } from "../types/User";
 import { api } from "./api";
 
 export class UserApi {
@@ -7,6 +7,6 @@ export class UserApi {
   };
 
   static getOnlineUsers = () => {
-    return api.get<UserOnlineResponse>("/user/online");
+    return api.get<User[]>("/user/online");
   };
 }

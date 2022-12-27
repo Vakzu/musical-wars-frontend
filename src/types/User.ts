@@ -1,7 +1,12 @@
-export interface UserBalanceResponse {
-  balance: string;
+export interface User {
+  id: number,
+  name: string
 }
 
-export interface UserOnlineResponse {
-  userNames: string[];
+export interface UserInLobby extends User {
+  isReady: boolean
+}
+
+export interface UserBalanceResponse {
+  balance: string;
 }

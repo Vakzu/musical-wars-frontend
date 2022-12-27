@@ -20,8 +20,8 @@ interface IAuthContext {
 }
 
 interface ILobbyContext {
-  lobbyId?: number;
-  setLobbyId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  lobbyId?: string;
+  setLobbyId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 interface IWebSocketContext {
@@ -40,7 +40,7 @@ const App: FC = () => {
   const [username, setUsername] = useState<string>();
   const [userId, setUserId] = useState<number>();
 
-  const [lobbyId, setLobbyId] = useState<number>();
+  const [lobbyId, setLobbyId] = useState<string>();
 
   const [isTriggered, setIsTriggered] = useState<boolean>(false);
 
