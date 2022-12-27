@@ -129,6 +129,8 @@ const MainPage: FC = () => {
       .then((response) => {
         if (response.data) {
           setLobbyId(response.data);
+          localStorage.setItem("lobbyId", response.data);
+          
           navFunction("/lobby");
         }
       })
