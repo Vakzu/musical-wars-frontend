@@ -6,7 +6,3 @@ export interface User {
 export interface UserInLobby extends User {
   isReady: boolean;
 }
-
-export interface UserBalanceResponse {
-  balance: string;
-}

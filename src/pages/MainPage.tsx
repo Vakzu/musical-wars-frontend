@@ -29,6 +29,8 @@ import MyButton from "../components/utility/MyButton";
 import { ExitButton } from "../components/main/ExitButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { InviteLobbyMessage, MembersChangeMessage } from "../types/WSMessage";
+import UserBalance from "../components/main/UserBalance";
+import { UserApi } from "../API/UserApi";
 
 const MainPage: FC = () => {
   const { userId, username, setIsAuth } = useContext(AuthContext);
@@ -41,7 +43,9 @@ const MainPage: FC = () => {
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
 
   const { isOpen, onToggle } = useDisclosure();
+
   const [statistics, setStatistics] = useState<Statistics | undefined>();
+  const [balance, setBalance] = useState<number | undefined>();
 
   const navFunction = useNavigate();
 
@@ -205,7 +209,12 @@ const MainPage: FC = () => {
                 </Box>
               </Stack>
             </Tooltip>
-            <Tooltip hasArrow placement="top" label="Strength" fontSize="1.3rem">
+            <Tooltip
+              hasArrow
+              placement="top"
+              label="Strength"
+              fontSize="1.3rem"
+            >
               <Stack color="#C02F1D" justify="center" align="center">
                 <Box fontSize="100%">
                   <GiHighKick />
@@ -220,12 +229,15 @@ const MainPage: FC = () => {
                 <Box fontSize="100%">
                   <GiHolyGrail />
                 </Box>
-                <Box fontSize="100%">
-                  {effectsList[currentEffectId]?.luck}
-                </Box>
+                <Box fontSize="100%">{effectsList[currentEffectId]?.luck}</Box>
               </Stack>
             </Tooltip>
-            <Tooltip hasArrow placement="top" label="Constitution" fontSize="1.3rem">
+            <Tooltip
+              hasArrow
+              placement="top"
+              label="Constitution"
+              fontSize="1.3rem"
+            >
               <Stack color="green.400" justify="center" align="center">
                 <Box fontSize="100%">
                   <GiLeg />
@@ -266,40 +278,24 @@ const MainPage: FC = () => {
     StatisticsApi.getStats()
       .then((response) => setStatistics(response.data))
       .catch((err) => console.log(err));
+
+    UserApi.getBalance()
+      .then((response) => setBalance(response.data))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
     <Box className="MainPage">
-      <Flex
-        position="absolute"
-        left="5"
-        align="center"
-        // justify="center"
-        w="lg"
-      >
+      <Flex position="absolute" left="5" align="center" w="lg">
         <Avatar bg="teal.500" />
         <Heading p="3%">Hello, {username ? username : "somebody"}</Heading>
       </Flex>
-      <ExitButton
-        aria-label="switch"
-        position="absolute"
-        top="5"
-        right="140"
-        onClick={handleExit}
-      />
-      <StatsButton
-        aria-label="switch"
-        position="absolute"
-        top="5"
-        right="20"
-        onClick={onToggle}
-      />
-      <DarkModeSwitch
-        aria-label="switch"
-        position="absolute"
-        top="5"
-        right="5"
-      />
+      <HStack position="absolute" top="5" right="5" spacing="5">
+        <UserBalance balance={balance} />
+        <ExitButton aria-label="switch" onClick={handleExit} />
+        <StatsButton aria-label="switch" onClick={onToggle} />
+        <DarkModeSwitch aria-label="switch" />
+      </HStack>
       <VStack
         position="absolute"
         align="center"
