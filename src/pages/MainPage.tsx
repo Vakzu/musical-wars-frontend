@@ -51,18 +51,18 @@ const MainPage: FC = () => {
 
   const stompClient = useStompClient();
 
-  useSubscription("/topic/online", (message) =>
+  useSubscription("/ws/topic/online", (message) =>
     handleChangeOnline(message.body)
   );
 
-  useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
+  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
     handleChangeLobbyMembers(message.body)
   );
-  useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
+  useSubscription("/ws/topic/lobby/" + lobbyId + "/changeReady", (message) =>
     handleChangeReadyState(message.body)
   );
 
-  useSubscription("/user/" + userId + "/queue/invites", (message) =>
+  useSubscription("/ws/user/" + userId + "/queue/invites", (message) =>
     handleInvite(message.body)
   );
 
@@ -149,7 +149,7 @@ const MainPage: FC = () => {
 
     if (stompClient) {
       stompClient.publish({
-        destination: "ws/online",
+        destination: "/ws/online",
         body: String(msg),
       });
     }

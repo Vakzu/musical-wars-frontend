@@ -37,7 +37,7 @@ const LobbyPage: FC = () => {
 
   const stompClient = useStompClient();
 
-  useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
+  useSubscription("/ws/topic/lobby/" + lobbyId + "/startFight", (message) =>
     handleStartFight(message.body)
   );
 
