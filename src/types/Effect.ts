@@ -14,3 +14,5 @@ export type AllEffectsResponse = {
 export type BuyEffectRequest = {
   effectId: number;
 };
+
+export type UserEffectsResponse = AllEffectsResponse;

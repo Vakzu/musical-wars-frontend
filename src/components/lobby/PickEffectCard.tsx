@@ -28,7 +28,7 @@ const PickEffectCard: FC<PickEffectCardProps> = ({ onPick, children }) => {
   const [currentEffectId, setCurrentEffectId] = useState<number>(0);
 
   const handleRefresh = () => {
-    EffectApi.getAll()
+    EffectApi.getUserEffects()
       .then((response) =>
         setEffectsList(response.data.effects ? response.data.effects : [])
       )
@@ -61,7 +61,12 @@ const PickEffectCard: FC<PickEffectCardProps> = ({ onPick, children }) => {
             <Heading size="lg">{currentEffect.name}</Heading>
             <Text fontSize="2xl">
               <HStack spacing="5%">
-                <Tooltip hasArrow placement="top" label="Stamina" fontSize="1.3rem">
+                <Tooltip
+                  hasArrow
+                  placement="top"
+                  label="Stamina"
+                  fontSize="1.3rem"
+                >
                   <Stack color="#107896" justify="center" align="center">
                     <Box fontSize="100%">
                       <GiBackstab />
@@ -69,7 +74,12 @@ const PickEffectCard: FC<PickEffectCardProps> = ({ onPick, children }) => {
                     <Box fontSize="100%">{currentEffect.stamina}</Box>
                   </Stack>
                 </Tooltip>
-                <Tooltip hasArrow placement="top" label="Strength" fontSize="1.3rem">
+                <Tooltip
+                  hasArrow
+                  placement="top"
+                  label="Strength"
+                  fontSize="1.3rem"
+                >
                   <Stack color="#C02F1D" justify="center" align="center">
                     <Box fontSize="100%">
                       <GiHighKick />
@@ -77,7 +87,12 @@ const PickEffectCard: FC<PickEffectCardProps> = ({ onPick, children }) => {
                     <Box fontSize="100%">{currentEffect.strength}</Box>
                   </Stack>
                 </Tooltip>
-                <Tooltip hasArrow placement="top" label="Luck" fontSize="1.3rem">
+                <Tooltip
+                  hasArrow
+                  placement="top"
+                  label="Luck"
+                  fontSize="1.3rem"
+                >
                   <Stack color="orange.500" justify="center" align="center">
                     <Box fontSize="100%">
                       <GiHolyGrail />
@@ -85,7 +100,12 @@ const PickEffectCard: FC<PickEffectCardProps> = ({ onPick, children }) => {
                     <Box fontSize="100%">{currentEffect.luck}</Box>
                   </Stack>
                 </Tooltip>
-                <Tooltip hasArrow placement="top" label="Constitution" fontSize="1.3rem">
+                <Tooltip
+                  hasArrow
+                  placement="top"
+                  label="Constitution"
+                  fontSize="1.3rem"
+                >
                   <Stack color="green.400" justify="center" align="center">
                     <Box fontSize="100%">
                       <GiLeg />

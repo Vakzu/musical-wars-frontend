@@ -1,4 +1,8 @@
-import { AllEffectsResponse, BuyEffectRequest } from "../types/Effect";
+import {
+  AllEffectsResponse,
+  BuyEffectRequest,
+  UserEffectsResponse,
+} from "../types/Effect";
 import { api } from "./api";
 
 export class EffectApi {
@@ -10,5 +14,9 @@ export class EffectApi {
     return api.post<void>("/effect/buy", null, {
       params: { effectId: request.effectId },
     });
+  };
+
+  static getUserEffects = () => {
+    return api.get<UserEffectsResponse>("/effect/user");
   };
 }
