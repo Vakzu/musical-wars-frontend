@@ -1,5 +1,5 @@
 import AuthPage from "./pages/AuthPage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import LobbyPage from "./pages/LobbyPage";
 import MainPage from "./pages/MainPage";
 import { FC, createContext, useEffect, useState } from "react";
@@ -20,16 +20,9 @@ interface ILobbyContext {
   setLobbyId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
-interface IWebSocketContext {
-  isTriggered: boolean;
-  setIsTriggered: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 export const AuthContext = createContext({} as IAuthContext);
 
 export const LobbyContext = createContext({} as ILobbyContext);
-
-export const WebSocketContext = createContext({} as IWebSocketContext);
 
 const App: FC = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
@@ -37,8 +30,6 @@ const App: FC = () => {
   const [userId, setUserId] = useState<number>();
 
   const [lobbyId, setLobbyId] = useState<string>();
-
-  const [isTriggered, setIsTriggered] = useState<boolean>(false);
 
   useEffect(() => {
     if (localStorage.getItem("isAuth")) {
@@ -73,12 +64,6 @@ const App: FC = () => {
             setLobbyId,
           }}
         >
-          <WebSocketContext.Provider
-            value={{
-              isTriggered,
-              setIsTriggered,
-            }}
-          >
             <BrowserRouter>
               {isAuth !== false ? (
                 <Routes>
@@ -94,7 +79,6 @@ const App: FC = () => {
                 </Routes>
               )}
             </BrowserRouter>
-          </WebSocketContext.Provider>
         </LobbyContext.Provider>
       </AuthContext.Provider>
     </StompSessionProvider>
