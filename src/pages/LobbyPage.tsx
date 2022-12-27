@@ -11,7 +11,7 @@ import { LobbyApi } from "../API/LobbyApi";
 import { AuthContext, LobbyContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
-// import { useStompClient, useSubscription } from "react-stomp-hooks";
+import { useStompClient, useSubscription } from "react-stomp-hooks";
 import { InviteLobbyMessage, StartFightMessage } from "../types/WSMessage";
 import {User} from "../types/User";
 
@@ -28,29 +28,29 @@ const LobbyPage: FC = () => {
 
   const navFunction = useNavigate();
 
-  // const stompClient = useStompClient();
+  const stompClient = useStompClient();
 
-  // useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
-  //   handleStartFight(message.body)
-  // );
+  useSubscription("topic/lobby/" + lobbyId + "/startFight", (message) =>
+    handleStartFight(message.body)
+  );
 
   const handlePickCharacter = () => {};
 
   const handlePickEffect = () => {};
 
-  const inviteUser = (recepientName: string) => {
+  const inviteUser = (recepientId: number) => {
     const msg: InviteLobbyMessage = {
       senderName: username!,
-      recepientName: recepientName,
+      recepientId: recepientId,
       lobbyId: lobbyId!,
     };
 
-    // if (stompClient) {
-    //   stompClient.publish({
-    //     destination: "/game/invite",
-    //     body: String(msg),
-    //   });
-    // }
+    if (stompClient) {
+      stompClient.publish({
+        destination: "/ws/invite",
+        body: JSON.stringify(msg),
+      });
+    }
   };
 
   const handleLeave = () => {
@@ -112,7 +112,7 @@ const LobbyPage: FC = () => {
                 <VStack align="left">
                   {onlineUsers?.map((user) => (
                     <Box key={user.id}>
-                      <InviteCheckbox onClick={() => inviteUser(user.name)}>
+                      <InviteCheckbox onClick={() => inviteUser(user.id)}>
                         <PersonName name={user.name} />
                       </InviteCheckbox>
                     </Box>

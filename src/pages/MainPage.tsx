@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "../components/utility/MyButton";
 import { ExitButton } from "../components/main/ExitButton";
 import { useStompClient, useSubscription } from "react-stomp-hooks";
-import { MembersChangeMessage } from "../types/WSMessage";
+import { InviteLobbyMessage, MembersChangeMessage } from "../types/WSMessage";
 
 const MainPage: FC = () => {
   const { userId, username, setIsAuth } = useContext(AuthContext);
@@ -43,22 +43,22 @@ const MainPage: FC = () => {
 
   const navFunction = useNavigate();
 
-  // const stompClient = useStompClient();
+  const stompClient = useStompClient();
 
-  // useSubscription("/topic/online", (message) =>
-  //   handleChangeOnline(message.body)
-  // );
+  useSubscription("/topic/online", (message) =>
+    handleChangeOnline(message.body)
+  );
 
-  // useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
-  //   handleChangeLobbyMembers(message.body)
-  // );
-  // useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
-  //   handleChangeReadyState(message.body)
-  // );
+  useSubscription("/topic/lobby/" + lobbyId + "/changeMembers", (message) =>
+    handleChangeLobbyMembers(message.body)
+  );
+  useSubscription("/topic/lobby/" + lobbyId + "/changeReady", (message) =>
+    handleChangeReadyState(message.body)
+  );
 
-  // useSubscription("/user/" + userId + "/queue/invites", (message) =>
-  //   handleInvite(message.body)
-  // );
+  useSubscription("/user/" + userId + "/queue/invites", (message) =>
+    handleInvite(message.body)
+  );
 
   const handleBuyHero = () => {
     HeroApi.buyHero({ heroId: heroesList[currentHeroId].id });
@@ -117,25 +117,34 @@ const MainPage: FC = () => {
     setIsAuth(false);
     localStorage.removeItem("isAuth");
 
-    // if (stompClient) {
-    //   stompClient.publish({
-    //     destination: "/game/online",
-    //     body: String(msg),
-    //   });
-    // }
+    if (stompClient) {
+      stompClient.publish({
+        destination: "ws/online",
+        body: String(msg),
+      });
+    }
   };
 
   //need to parse MembersChangeMessage
-  const handleChangeOnline = (onlineMessageBody: string) => {};
+  const handleChangeOnline = (onlineMessageBody: string) => {
+    console.log(onlineMessageBody);
+  };
 
   //need to parse MembersChangeMessage
-  const handleChangeLobbyMembers = (lobbyMembersChangeBody: string) => {};
+  const handleChangeLobbyMembers = (lobbyMembersChangeBody: string) => {
+    console.log(lobbyMembersChangeBody);
+  };
 
   //need to parse ReadyStateChangeMessage
-  const handleChangeReadyState = (changeReadyStateBody: string) => {};
+  const handleChangeReadyState = (changeReadyStateBody: string) => {
+    console.log(changeReadyStateBody);
+  };
 
   //need to parse InviteLobbyMessage
-  const handleInvite = (inviteBody: string) => {};
+  const handleInvite = (inviteBody: string) => {
+    let obj: InviteLobbyMessage = JSON.parse(inviteBody);
+    console.log(obj);
+  };
 
   const renderHeroCard = (): ReactNode => {
     if (heroesList[currentHeroId]) {

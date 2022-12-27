@@ -53,10 +53,10 @@ const App: FC = () => {
   }, []);
 
   return (
-    // <StompSessionProvider
-    //   url={"http://localhost:5000/game"}
-    //   //All options supported by @stomp/stompjs can be used here
-    // >
+    <StompSessionProvider
+      url={"http://localhost:8080/game"}
+      //All options supported by @stomp/stompjs can be used here
+    >
       <AuthContext.Provider
         value={{
           isAuth,
@@ -97,7 +97,7 @@ const App: FC = () => {
           </WebSocketContext.Provider>
         </LobbyContext.Provider>
       </AuthContext.Provider>
-    // </StompSessionProvider>
+     </StompSessionProvider>
   );
 };
 
