@@ -67,11 +67,15 @@ const MainPage: FC = () => {
   );
 
   const handleBuyHero = () => {
-    HeroApi.buyHero({ heroId: heroesList[currentHeroId].id });
+    HeroApi.buyHero({ heroId: heroesList[currentHeroId].id })
+      .then(() => handleRefreshBalance())
+      .catch((err) => console.log(err));
   };
 
   const handleBuyEffect = () => {
-    EffectApi.buyEffect({ effectId: effectsList[currentEffectId].id });
+    EffectApi.buyEffect({ effectId: effectsList[currentEffectId].id })
+      .then(() => handleRefreshBalance())
+      .catch((err) => console.log(err));
   };
 
   const handleNextHero = () => {
@@ -92,13 +96,31 @@ const MainPage: FC = () => {
 
   const handleRefreshHeroes = () => {
     HeroApi.getAll()
-      .then((response) => setHeroesList(response.data.heroes))
+      .then((response) => {
+        setHeroesList(response.data.heroes);
+        setCurrentHeroId(0);
+      })
       .catch((err) => console.log(err));
   };
 
   const handleRefreshEffects = () => {
     EffectApi.getAll()
-      .then((response) => setEffectsList(response.data.effects))
+      .then((response) => {
+        setEffectsList(response.data.effects);
+        setCurrentEffectId(0);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleRefreshStatistics = () => {
+    StatisticsApi.getStats()
+      .then((response) => setStatistics(response.data))
+      .catch((err) => console.log(err));
+  };
+
+  const handleRefreshBalance = () => {
+    UserApi.getBalance()
+      .then((response) => setBalance(response.data))
       .catch((err) => console.log(err));
   };
 
@@ -261,27 +283,10 @@ const MainPage: FC = () => {
   };
 
   useEffect(() => {
-    HeroApi.getAll()
-      .then((response) => {
-        setHeroesList(response.data.heroes);
-        setCurrentHeroId(0);
-      })
-      .catch((err) => console.log(err));
-
-    EffectApi.getAll()
-      .then((response) => {
-        setEffectsList(response.data.effects);
-        setCurrentEffectId(0);
-      })
-      .catch((err) => console.log(err));
-
-    StatisticsApi.getStats()
-      .then((response) => setStatistics(response.data))
-      .catch((err) => console.log(err));
-
-    UserApi.getBalance()
-      .then((response) => setBalance(response.data))
-      .catch((err) => console.log(err));
+    handleRefreshHeroes();
+    handleRefreshEffects();
+    handleRefreshStatistics();
+    handleRefreshBalance();
   }, []);
 
   return (
